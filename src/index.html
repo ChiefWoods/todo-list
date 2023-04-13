@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Todo List</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer src="main.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <img src="./icons/clipboard-check-outline.svg" alt="logo" class="logo">
+    <span class="logo-title">Todo List</span>
+  </header>
+  <main>
+    <nav>
+      <ul class="nav-top">
+        <li>
+          <button class="nav-button">
+            <img src="./icons/inbox.svg" alt="inbox" class="nav-icon">
+            <span class="nav-span">Inbox</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-button">
+            <img src="./icons/calendar-today.svg" alt="today" class="nav-icon">
+            <span class="nav-span">Today</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-button">
+            <img src="./icons/calendar-week.svg" alt="this week" class="nav-icon">
+            <span class="nav-span">This week</span>
+          </button>
+        </li>
+      </ul>
+      <div class="nav-bottom">
+        <h1>Projects</h1>
+        <ul class="nav-projects">
+          <li>
+            <button class="nav-button">
+              <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
+              <span class="nav-span nav-project-title">Project A</span>
+              <span class="task-count">3</span>
+              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete">
+            </button>
+          </li>
+          <li>
+            <button class="nav-button">
+              <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
+              <span class="nav-span nav-project-title">Project B</span>
+              <span class="task-count">2</span>
+              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete">
+            </button>
+          </li>
+        </ul>
+        <button class="nav-button" id="add-project">
+          <img src="./icons/plus.svg" alt="add" class="nav-icon">
+          <span class="nav-span">Add Project</span>
+        </button>
+        <div class="container-add-project">
+          <input type="text" name="input-project-title" id="input-project-title">
+          <div>
+            <button class="add-button">Add</button>
+            <button class="cancel-button">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section>
+      <h1 class="project-title">Project A</h1>
+      <div class="container-task">
+        <ul class="task-list">
+          <li>
+            <button class="task">
+              <input type="checkbox" name="checkbox1" id="checkbox1">
+              <h2 class="task-title">aaa</h2>
+              <span class="task-date">10/02/2023</span>
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+            </button>
+          </li>
+          <li>
+            <button class="task">
+              <input type="checkbox" name="checkbox2" id="checkbox2">
+              <h2 class="task-title">bbbb</h2>
+              <span class="task-date">-</span>
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+            </button>
+          </li>
+          <li>
+            <button class="task">
+              <input type="checkbox" name="checkbox3" id="checkbox3">
+              <h2 class="task-title">ccccc</h2>
+              <span class="task-date">15/02/2023</span>
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+            </button>
+          </li>
+        </ul>
+        <button class="task" id="add-task">
+          <img src="./icons/plus.svg" alt="add">
+          <span>Add Task</span>
+        </button>
+      </div>
+    </section>
+    <section class="create-popup">
+      <div>
+        <span class="popup-title">Create Task</span>
+        <button>
+          <img src="./icons/close.svg" alt="exit" class="create-exit">
+        </button>
+      </div>
+      <div>
+        <input type="text" name="input-task-title" id="input-task-title" placeholder="Title">
+        <textarea name="input-task-desc" id="input-task-desc" placeholder="Description"></textarea>
+        <div class="container-date">
+          <label for="create-task-date">Due Date :</label>
+          <input type="date" name="create-task-date" id="create-task-date">
+        </div>
+        <div class="container-priority">
+          <span>Priority :</span>
+          <div class="container-priority-level">
+            <input type="radio" name="create-task-priority" id="low" value="low">
+            <label for="low">Low</label>
+            <input type="radio" name="create-task-priority" id="medium" value="medium">
+            <label for="medium">Medium</label>
+            <input type="radio" name="create-task-priority" id="high" value="high">
+            <label for="high">High</label>
+          </div>
+          <button class="create-task-add">Add</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span class="made-by">Made by ChiefWoods</span>
+    <a class="github-link" href="https://github.com/ChiefWoods/todo-list" target="_blank">
+      <img src="icons/github.svg" class="github-icon" alt="GitHub">
+    </a>
+  </footer>
+</body>
+
+</html>
