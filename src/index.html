@@ -12,8 +12,10 @@
 
 <body>
   <header>
-    <img src="./icons/clipboard-check-outline.svg" alt="logo" class="logo">
-    <span class="logo-title">Todo List</span>
+    <div class="container-header">
+      <img src="./icons/clipboard-check-outline.svg" alt="logo" class="logo">
+      <span class="logo-title">Todo List</span>
+    </div>
   </header>
   <main>
     <nav>
@@ -52,7 +54,7 @@
             <button class="nav-button">
               <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
               <span class="nav-span">Project B</span>
-              <span class="task-count">2</span>
+              <span class="task-count"></span>
               <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete">
             </button>
           </li>
@@ -75,8 +77,11 @@
       <div class="container-task">
         <ul class="task-list">
           <li>
-            <button class="task">
-              <input type="checkbox" name="checkbox1" id="checkbox1">
+            <button class="task priority-high">
+              <label for="checkbox1">
+                <input type="checkbox" name="checkbox1" id="checkbox1" class="task-checkbox">
+                <div class="checkbox-div"></div>
+              </label>
               <h2 class="task-title">aaa</h2>
               <span class="task-date">10/02/2023</span>
               <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
@@ -84,17 +89,23 @@
             </button>
           </li>
           <li>
-            <button class="task">
-              <input type="checkbox" name="checkbox2" id="checkbox2">
-              <h2 class="task-title">bbbb</h2>
+            <button class="task priority-medium">
+              <label for="checkbox2">
+                <input type="checkbox" name="checkbox2" id="checkbox2" class="task-checkbox" checked>
+                <div class="checkbox-div"></div>
+              </label>
+              <h2 class="task-title" style="text-decoration: line-through;">bbbb</h2>
               <span class="task-date">-</span>
               <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
               <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
             </button>
           </li>
           <li>
-            <button class="task">
-              <input type="checkbox" name="checkbox3" id="checkbox3">
+            <button class="task priority-low">
+              <label for="checkbox3">
+                <input type="checkbox" name="checkbox3" id="checkbox3" class="task-checkbox">
+                <div class="checkbox-div"></div>
+              </label>
               <h2 class="task-title">ccccc</h2>
               <span class="task-date">15/02/2023</span>
               <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
@@ -108,6 +119,25 @@
         </button>
       </div>
     </section>
+    <!-- <section class="container-project">
+      <h1 class="project-title">Project B</h1>
+      <div class="container-task">
+        <ul class="task-list">
+        </ul>
+        <button class="task" id="add-task">
+          <img src="./icons/plus.svg" alt="add">
+          <span>Add Task</span>
+        </button>
+      </div>
+    </section> -->
+    <!-- <section class="container-project">
+      <h1 class="project-title">This week</h1>
+      <div class="container-task">
+        <h2 class="empty-task">It's quite empty here...</h2>
+        <ul class="task-list">
+        </ul>
+      </div>
+    </section> -->
     <section class="container-create">
       <div>
         <span class="popup-title">Create Task</span>
