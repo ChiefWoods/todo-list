@@ -1,18 +1,3 @@
-html {
-  --tailwind-sky-50: #f0f9ff;
-  --tailwind-sky-200: #bae6fd;
-  --tailwind-sky-400: #38bdf8;
-  --tailwind-sky-500: #0ea5e9;
-  --add-green: #4ade80;
-  --cancel-red: #f87171;
-  --add-green-hover: #22c55e;
-  --cancel-red-hover: #ef4444;
-  --nav-width: 300px;
-  --priority-low: #4ade80;
-  --priority-medium: #fde047;
-  --priority-high: #ef4444;
-}
-
 @font-face {
   font-family: Pacifico;
   src: url(fonts/Pacifico/Pacifico-Regular.ttf) format(truetype);
@@ -24,34 +9,43 @@ html {
   src: url(fonts/Heebo/Heebo-VariableFont_wght.ttf) format(truetype);
 }
 
-:root {
-  overflow-x: hidden;
-}
-
 * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
 }
 
+html {
+  --tailwind-sky-50: #f0f9ff;
+  --tailwind-sky-200: #bae6fd;
+  --tailwind-sky-400: #38bdf8;
+  --tailwind-sky-500: #0ea5e9;
+  --add-green: #4ade80;
+  --cancel-red: #f87171;
+  --add-green-dark: #22c55e;
+  --cancel-red-dark: #ef4444;
+  --nav-width: 300px;
+  --priority-low: #4ade80;
+  --priority-medium: #fde047;
+  --priority-high: #ef4444;
+}
+
 body {
-  min-height: 100vh;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  display: grid;
-  grid-template-columns: var(--nav-width) 1fr;
-  grid-template-rows: 100px 1fr 55px;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 /* Header */
 
 header {
-  grid-area: 1 / 1 / 2 / 3;
   background-color: var(--tailwind-sky-400);
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 7px 20px;
+  width: 100%;
 }
 
 .container-header {
@@ -73,7 +67,6 @@ header {
 
 main {
   flex: 1;
-  grid-area: 2 / 1 / 3 / 3;
   display: flex;
 }
 
@@ -82,7 +75,6 @@ main {
 nav {
   overflow-y: auto;
   background-color: var(--tailwind-sky-50);
-  width: 20vw;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -160,11 +152,11 @@ nav {
   color: gray;
 }
 
-.project-delete {
+.project-delete-button {
   margin-left: auto;
 }
 
-.project-delete:hover {
+.project-delete-button:hover {
   transform: scale(1.3);
 }
 
@@ -193,8 +185,8 @@ nav {
   padding: 10px 0px;
 }
 
-.add-button,
-.cancel-button {
+.project-add-button,
+.project-cancel-button {
   cursor: pointer;
   width: 100%;
   height: 40px;
@@ -205,34 +197,33 @@ nav {
   color: white;
 }
 
-.add-button {
+.project-add-button {
   border: 1px solid var(--add-green);
   background-color: var(--add-green);
 }
 
-.add-button:hover {
-  background-color: var(--add-green-hover);
+.project-add-button:hover {
+  background-color: var(--add-green-dark);
 }
 
-.cancel-button {
+.project-cancel-button {
   border: 1px solid var(--cancel-red);
   background-color: var(--cancel-red);
 }
 
-.cancel-button:hover {
-  background-color: var(--cancel-red-hover);
+.project-cancel-button:hover {
+  background-color: var(--cancel-red-dark);
 }
 
 /* Project */
 
 .container-project {
   overflow-y: auto;
-  width: 100%;
-  min-width: 400px;
-  margin: 0px 10%;
+  min-width: 350px;
+  width: 60%;
+  margin: 0px auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .project-title {
@@ -240,12 +231,12 @@ nav {
   font-size: 32px;
   font-weight: 600;
   padding: 20px 0px;
+  align-self: flex-start;
 }
 
 /* Task */
 
 .container-task {
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -331,15 +322,15 @@ nav {
   padding: 0px 15px;
 }
 
-.task-edit,
-.task-delete {
+.task-edit-button,
+.task-delete-button {
   padding: 0px 8px;
   cursor: pointer;
   height: 22px;
 }
 
-.task-edit:hover,
-.task-delete:hover {
+.task-edit-button:hover,
+.task-delete-button:hover {
   transform: scale(1.15);
 }
 
@@ -362,7 +353,8 @@ nav {
 
 /* Create */
 
-.modal-create {
+.modal-create,
+.modal-edit {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -374,12 +366,15 @@ nav {
   min-width: 400px;
 }
 
-.modal-create::backdrop {
+.modal-create::backdrop,
+.modal-edit::backdrop {
   background: black;
   opacity: 0.3;
 }
 
-.modal-create-top {
+.modal-create-top,
+.modal-edit-top,
+.modal-delete-top {
   background-color: var(--tailwind-sky-500);
   display: flex;
   justify-content: space-between;
@@ -387,7 +382,9 @@ nav {
   padding: 10px;
 }
 
-.modal-create-top>span {
+.modal-create-top>span,
+.modal-edit-top>span,
+.modal-delete-top>span {
   font-family: Heebo, sans-serif;
   font-size: 28px;
   font-weight: 600;
@@ -395,18 +392,22 @@ nav {
   padding-left: 5px;
 }
 
-.modal-create-top>button {
+.modal-create-top>button,
+.modal-edit-top>button,
+.modal-delete-top>button {
   cursor: pointer;
   background-color: transparent;
   border: none;
 }
 
-.create-exit {
+.exit-button {
   width: 35px;
   aspect-ratio: 1 / 1;
 }
 
-.modal-create-bottom {
+.modal-create-bottom,
+.modal-edit-bottom,
+.modal-delete-bottom {
   display: flex;
   flex-direction: column;
   padding: 18px;
@@ -415,7 +416,8 @@ nav {
   gap: 15px;
 }
 
-.create-task-title {
+.create-task-title,
+.edit-task-title {
   border: none;
   outline: none;
   font-family: Heebo, sans-serif;
@@ -424,12 +426,15 @@ nav {
 }
 
 .create-task-title::placeholder,
-.create-task-desc::placeholder {
+.create-task-desc::placeholder,
+.edit-task-title::placeholder,
+.edit-task-desc::placeholder {
   font-size: 14px;
   color: gray;
 }
 
-.create-task-desc {
+.create-task-desc,
+.edit-task-desc {
   border: none;
   outline: none;
   font-family: Heebo, sans-serif;
@@ -449,11 +454,13 @@ nav {
   align-items: center;
 }
 
-label[for="create-task-date"] {
+label[for="create-task-date"],
+label[for="edit-task-date"] {
   margin-right: 10px;
 }
 
-#create-task-date {
+#create-task-date,
+#edit-task-date {
   background-color: var(--tailwind-sky-500);
   border: none;
   outline: none;
@@ -501,41 +508,43 @@ label[for="create-task-date"] {
 }
 
 .container-priority-level>label:hover,
-input[name="create-task-priority"]:checked+label {
+input[name="create-task-priority"]:checked+label,
+input[name="edit-task-priority"]:checked+label {
   color: white;
 }
 
-label[for="low"] {
+.label-low {
   border: 3px solid var(--priority-low);
   color: var(--priority-low);
 }
 
-label[for="low"]:hover,
+.label-low:hover,
 input[value="low"]:checked+label {
   background-color: var(--priority-low);
 }
 
-label[for="medium"] {
+.label-medium {
   border: 3px solid var(--priority-medium);
   color: var(--priority-medium);
 }
 
-label[for="medium"]:hover,
+.label-medium:hover,
 input[value="medium"]:checked+label {
   background-color: var(--priority-medium);
 }
 
-label[for="high"] {
+.label-high {
   border: 3px solid var(--priority-high);
   color: var(--priority-high);
 }
 
-label[for="high"]:hover,
+.label-high:hover,
 input[value="high"]:checked+label {
   background-color: var(--priority-high);
 }
 
-.create-task-add {
+.create-add-button,
+.edit-change-button {
   margin-left: auto;
   cursor: pointer;
   font-family: Heebo, sans-serif;
@@ -549,20 +558,86 @@ input[value="high"]:checked+label {
   transition: all 0.2s;
 }
 
-.create-task-add:hover {
+.create-add-button:hover,
+.edit-change-button:hover {
   background-color: white;
   color: var(--tailwind-sky-500);
+}
+
+/* Delete */
+
+.modal-delete {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 0px;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  width: 30vw;
+  min-width: 250px;
+}
+
+.modal-delete::backdrop {
+  background: black;
+  opacity: 0.3;
+}
+
+.modal-delete-bottom {
+  gap: 35px;
+}
+
+.modal-delete-bottom>span {
+  font-family: Heebo, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--tailwind-sky-500);
+}
+
+.container-confirm {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.container-confirm>button {
+  font-family: Heebo, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+}
+
+.delete-cancel-button {
+  background-color: var(--cancel-red-dark);
+  border: 3px solid var(--cancel-red-dark);
+  transition: all 0.2s;
+}
+
+.delete-cancel-button:hover {
+  background-color: white;
+  color: var(--cancel-red-dark);
+}
+
+.delete-yes-button {
+  background-color: var(--add-green-dark);
+  border: 3px solid var(--add-green-dark);
+}
+
+.delete-yes-button:hover {
+  background-color: white;
+  color: var(--add-green-dark);
 }
 
 /* Footer */
 
 footer {
   height: 55px;
-  width: 100vw;
   display: flex;
   align-items: center;
   background-color: #0D1117;
-  grid-area: 3 / 1 / 4 / 3;
 }
 
 .made-by {

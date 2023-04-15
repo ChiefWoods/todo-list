@@ -49,7 +49,7 @@
               <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
               <span class="nav-span">Project A</span>
               <span class="task-count">3</span>
-              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete">
+              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete-button">
             </button>
           </li>
           <li>
@@ -57,7 +57,7 @@
               <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
               <span class="nav-span">Project B</span>
               <span class="task-count"></span>
-              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete">
+              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete-button">
             </button>
           </li>
         </ul>
@@ -68,8 +68,8 @@
         <div class="container-add-project">
           <input type="text" name="input-project-title" id="input-project">
           <div>
-            <button class="add-button">Add</button>
-            <button class="cancel-button">Cancel</button>
+            <button class="project-add-button">Add</button>
+            <button class="project-cancel-button">Cancel</button>
           </div>
         </div>
       </div>
@@ -86,8 +86,8 @@
               </label>
               <h2 class="task-title">aaa</h2>
               <span class="task-date">19/04/2023</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
             </button>
           </li>
           <li>
@@ -98,8 +98,8 @@
               </label>
               <h2 class="task-title" style="text-decoration: line-through;">bbbb</h2>
               <span class="task-date">-</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
             </button>
           </li>
           <li>
@@ -110,8 +110,8 @@
               </label>
               <h2 class="task-title">ccccc</h2>
               <span class="task-date">26/04/2023</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
             </button>
           </li>
         </ul>
@@ -144,8 +144,8 @@
               </label>
               <h2 class="task-title">dddddd</h2>
               <span class="task-date">24/04/2023</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
             </button>
           </li>
         </ul>
@@ -167,7 +167,7 @@
       <div class="modal-create-top">
         <span>Create Task</span>
         <button>
-          <img src="./icons/close-white.svg" alt="exit" class="create-exit">
+          <img src="./icons/close-white.svg" alt="exit" class="create-exit exit-button">
         </button>
       </div>
       <form class="modal-create-bottom" method="dialog">
@@ -180,45 +180,61 @@
         <div class="container-priority">
           <span>Priority :</span>
           <div class="container-priority-level">
-            <input type="radio" name="create-task-priority" id="low" value="low" required>
-            <label for="low">Low</label>
-            <input type="radio" name="create-task-priority" id="medium" value="medium">
-            <label for="medium">Medium</label>
-            <input type="radio" name="create-task-priority" id="high" value="high">
-            <label for="high">High</label>
+            <input type="radio" name="create-task-priority" id="create-low" value="low" required>
+            <label for="create-low" class="label-low">Low</label>
+            <input type="radio" name="create-task-priority" id="create-medium" value="medium">
+            <label for="create-medium" class="label-medium">Medium</label>
+            <input type="radio" name="create-task-priority" id="create-high" value="high">
+            <label for="create-high" class="label-high">High</label>
           </div>
-          <button class="create-task-add" type="submit">Add</button>
+          <button class="create-add-button" type="submit">Add</button>
         </div>
       </form>
     </dialog>
-    <!-- <dialog class="modal-create">
-      <div class="modal-create-top">
+    <dialog class="modal-edit">
+      <div class="modal-edit-top">
         <span>Edit Task</span>
         <button>
-          <img src="./icons/close-white.svg" alt="exit" class="create-exit">
+          <img src="./icons/close-white.svg" alt="exit" class="edit-exit exit-button">
         </button>
       </div>
-      <form class="modal-create-bottom" method="dialog">
-        <input type="text" name="create-task-title" class="create-task-title" placeholder="Title" value="aaa">
-        <textarea name="create-task-desc" class="create-task-desc" placeholder="Description">sample description for aaa</textarea>
+      <form class="modal-edit-bottom" method="dialog">
+        <input type="text" name="edit-task-title" class="edit-task-title" placeholder="Title" value="aaa">
+        <textarea name="edit-task-desc" class="edit-task-desc"
+          placeholder="Description">sample description for aaa</textarea>
         <div class="container-date">
-          <label for="create-task-date">Due Date :</label>
-          <input type="date" name="create-task-date" id="create-task-date" value="2023-04-19">
+          <label for="edit-task-date">Due Date :</label>
+          <input type="date" name="edit-task-date" id="edit-task-date" value="2023-04-19">
         </div>
         <div class="container-priority">
           <span>Priority :</span>
           <div class="container-priority-level">
-            <input type="radio" name="create-task-priority" id="low" value="low" required>
-            <label for="low">Low</label>
-            <input type="radio" name="create-task-priority" id="medium" value="medium">
-            <label for="medium">Medium</label>
-            <input type="radio" name="create-task-priority" id="high" value="high" checked>
-            <label for="high">High</label>
+            <input type="radio" name="edit-task-priority" id="edit-low" value="low" required>
+            <label for="edit-low" class="label-low">Low</label>
+            <input type="radio" name="edit-task-priority" id="edit-medium" value="medium">
+            <label for="edit-medium" class="label-medium">Medium</label>
+            <input type="radio" name="edit-task-priority" id="edit-high" value="high" checked>
+            <label for="edit-high" class="label-high">High</label>
           </div>
-          <button class="create-task-add" type="submit">Edit</button>
+          <button class="edit-change-button" type="submit">Edit</button>
         </div>
       </form>
-    </dialog> -->
+    </dialog>
+    <dialog class="modal-delete">
+      <div class="modal-delete-top">
+        <span>Confirm Delete</span>
+        <button>
+          <img src="./icons/close-white.svg" alt="exit" class="delete-exit exit-button">
+        </button>
+      </div>
+      <div class="modal-delete-bottom">
+        <span>Are you sure you want to delete this task?</span>
+        <div class="container-confirm">
+          <button class="delete-cancel-button">Cancel</button>
+          <button class="delete-yes-button">Yes</button>
+        </div>
+      </div>
+    </dialog>
   </main>
   <footer>
     <span class="made-by">Made by ChiefWoods</span>
