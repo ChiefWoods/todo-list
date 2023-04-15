@@ -6,7 +6,8 @@
   <title>Todo List</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script defer src="main.js"></script>
+  <!-- <script defer src="main.js"></script> -->
+  <script defer src="index.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -24,6 +25,7 @@
           <button class="nav-button">
             <img src="./icons/inbox.svg" alt="inbox" class="nav-icon">
             <span class="nav-span">Inbox</span>
+            <span class="task-count">1</span>
           </button>
         </li>
         <li>
@@ -83,7 +85,7 @@
                 <div class="checkbox-div"></div>
               </label>
               <h2 class="task-title">aaa</h2>
-              <span class="task-date">10/02/2023</span>
+              <span class="task-date">19/04/2023</span>
               <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
               <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
             </button>
@@ -107,7 +109,7 @@
                 <div class="checkbox-div"></div>
               </label>
               <h2 class="task-title">ccccc</h2>
-              <span class="task-date">15/02/2023</span>
+              <span class="task-date">26/04/2023</span>
               <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
               <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
             </button>
@@ -131,6 +133,29 @@
       </div>
     </section> -->
     <!-- <section class="container-project">
+      <h1 class="project-title">Inbox</h1>
+      <div class="container-task">
+        <ul class="task-list">
+          <li>
+            <button class="task priority-low">
+              <label for="checkbox3">
+                <input type="checkbox" name="checkbox3" id="checkbox3" class="task-checkbox">
+                <div class="checkbox-div"></div>
+              </label>
+              <h2 class="task-title">dddddd</h2>
+              <span class="task-date">24/04/2023</span>
+              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit">
+              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete">
+            </button>
+          </li>
+        </ul>
+        <button class="task" id="add-task">
+          <img src="./icons/plus.svg" alt="add">
+          <span>Add Task</span>
+        </button>
+      </div>
+    </section> -->
+    <!-- <section class="container-project">
       <h1 class="project-title">This week</h1>
       <div class="container-task">
         <h2 class="empty-task">It's quite empty here...</h2>
@@ -138,16 +163,16 @@
         </ul>
       </div>
     </section> -->
-    <section class="container-create">
-      <div>
-        <span class="popup-title">Create Task</span>
+    <dialog class="modal-create">
+      <div class="modal-create-top">
+        <span>Create Task</span>
         <button>
-          <img src="./icons/close.svg" alt="exit" class="create-exit">
+          <img src="./icons/close-white.svg" alt="exit" class="create-exit">
         </button>
       </div>
-      <div>
-        <input type="text" name="input-task-title" id="input-task-title" placeholder="Title">
-        <textarea name="input-task-desc" id="input-task-desc" placeholder="Description"></textarea>
+      <form class="modal-create-bottom" method="dialog">
+        <input type="text" name="create-task-title" class="create-task-title" placeholder="Title">
+        <textarea name="create-task-desc" class="create-task-desc" placeholder="Description"></textarea>
         <div class="container-date">
           <label for="create-task-date">Due Date :</label>
           <input type="date" name="create-task-date" id="create-task-date">
@@ -155,17 +180,45 @@
         <div class="container-priority">
           <span>Priority :</span>
           <div class="container-priority-level">
-            <input type="radio" name="create-task-priority" id="low" value="low">
+            <input type="radio" name="create-task-priority" id="low" value="low" required>
             <label for="low">Low</label>
             <input type="radio" name="create-task-priority" id="medium" value="medium">
             <label for="medium">Medium</label>
             <input type="radio" name="create-task-priority" id="high" value="high">
             <label for="high">High</label>
           </div>
-          <button class="create-task-add">Add</button>
+          <button class="create-task-add" type="submit">Add</button>
         </div>
+      </form>
+    </dialog>
+    <!-- <dialog class="modal-create">
+      <div class="modal-create-top">
+        <span>Edit Task</span>
+        <button>
+          <img src="./icons/close-white.svg" alt="exit" class="create-exit">
+        </button>
       </div>
-    </section>
+      <form class="modal-create-bottom" method="dialog">
+        <input type="text" name="create-task-title" class="create-task-title" placeholder="Title" value="aaa">
+        <textarea name="create-task-desc" class="create-task-desc" placeholder="Description">sample description for aaa</textarea>
+        <div class="container-date">
+          <label for="create-task-date">Due Date :</label>
+          <input type="date" name="create-task-date" id="create-task-date" value="2023-04-19">
+        </div>
+        <div class="container-priority">
+          <span>Priority :</span>
+          <div class="container-priority-level">
+            <input type="radio" name="create-task-priority" id="low" value="low" required>
+            <label for="low">Low</label>
+            <input type="radio" name="create-task-priority" id="medium" value="medium">
+            <label for="medium">Medium</label>
+            <input type="radio" name="create-task-priority" id="high" value="high" checked>
+            <label for="high">High</label>
+          </div>
+          <button class="create-task-add" type="submit">Edit</button>
+        </div>
+      </form>
+    </dialog> -->
   </main>
   <footer>
     <span class="made-by">Made by ChiefWoods</span>
