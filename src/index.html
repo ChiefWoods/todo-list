@@ -79,7 +79,7 @@
       <div class="container-task">
         <ul class="task-list">
           <li>
-            <button class="task priority-high">
+            <button class="task task-high" data-task="0">
               <label for="checkbox1">
                 <input type="checkbox" name="checkbox1" id="checkbox1" class="task-checkbox">
                 <div class="checkbox-div"></div>
@@ -91,7 +91,7 @@
             </button>
           </li>
           <li>
-            <button class="task priority-medium">
+            <button class="task task-medium" data-task="1">
               <label for="checkbox2">
                 <input type="checkbox" name="checkbox2" id="checkbox2" class="task-checkbox" checked>
                 <div class="checkbox-div"></div>
@@ -103,7 +103,7 @@
             </button>
           </li>
           <li>
-            <button class="task priority-low">
+            <button class="task task-low" data-task="2">
               <label for="checkbox3">
                 <input type="checkbox" name="checkbox3" id="checkbox3" class="task-checkbox">
                 <div class="checkbox-div"></div>
@@ -137,7 +137,7 @@
       <div class="container-task">
         <ul class="task-list">
           <li>
-            <button class="task priority-low">
+            <button class="task task-low">
               <label for="checkbox3">
                 <input type="checkbox" name="checkbox3" id="checkbox3" class="task-checkbox">
                 <div class="checkbox-div"></div>
@@ -233,6 +233,48 @@
           <button class="delete-cancel-button">Cancel</button>
           <button class="delete-yes-button">Yes</button>
         </div>
+      </div>
+    </dialog>
+    <dialog class="modal-view" data-view="0">
+      <div class="modal-view-top">
+        <h1 class="view-title">aaa</h1>
+        <button>
+          <img src="./icons/close-white.svg" alt="exit" class="view-exit exit-button">
+        </button>
+      </div>
+      <div class="modal-view-bottom">
+        <p class="view-desc">Triple a</p>
+        <span class="view-project">Project : Project A</span>
+        <span class="view-task-date">Due Date : 19/04/2023</span>
+        <span class="view-task-priority">Priority : <span class="view-task-priority-level view-high">High</span></span>
+      </div>
+    </dialog>
+    <dialog class="modal-view" data-view="1">
+      <div class="modal-view-top">
+        <h1 class="view-title">bbbb</h1>
+        <button>
+          <img src="./icons/close-white.svg" alt="exit" class="view-exit exit-button">
+        </button>
+      </div>
+      <div class="modal-view-bottom">
+        <p class="view-desc">Quadruple b</p>
+        <span class="view-project">Project : Project A</span>
+        <span class="view-task-date">Due Date : -</span>
+        <span class="view-task-priority">Priority : <span class="view-task-priority-level view-medium">Medium</span></span>
+      </div>
+    </dialog>
+    <dialog class="modal-view" data-view="2">
+      <div class="modal-view-top">
+        <h1 class="view-title">ccccc</h1>
+        <button>
+          <img src="./icons/close-white.svg" alt="exit" class="view-exit exit-button">
+        </button>
+      </div>
+      <div class="modal-view-bottom">
+        <p class="view-desc">Lots of c</p>
+        <span class="view-project">Project : Project A</span>
+        <span class="view-task-date">Due Date : 26/04/2023</span>
+        <span class="view-task-priority">Priority : <span class="view-task-priority-level view-low">Low</span></span>
       </div>
     </dialog>
   </main>
