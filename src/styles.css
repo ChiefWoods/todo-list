@@ -25,9 +25,9 @@ html {
   --add-green-dark: #22c55e;
   --cancel-red-dark: #ef4444;
   --nav-width: 300px;
-  --priority-low: #4ade80;
-  --priority-medium: #fde047;
-  --priority-high: #ef4444;
+  --priority-low-green: #4ade80;
+  --priority-medium-yellow: #fde047;
+  --priority-high-red: #ef4444;
 }
 
 body {
@@ -264,16 +264,16 @@ nav {
   background-color: #e5e7eb;
 }
 
-.priority-high {
-  border-left: 6px solid var(--priority-high);
+.task-high {
+  border-left: 6px solid var(--priority-high-red);
 }
 
-.priority-medium {
-  border-left: 6px solid var(--priority-medium);
+.task-medium {
+  border-left: 6px solid var(--priority-medium-yellow);
 }
 
-.priority-low {
-  border-left: 6px solid var(--priority-low);
+.task-low {
+  border-left: 6px solid var(--priority-low-green);
 }
 
 .task-checkbox {
@@ -354,7 +354,9 @@ nav {
 /* Create */
 
 .modal-create,
-.modal-edit {
+.modal-edit,
+.modal-delete,
+.modal-view {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -362,6 +364,10 @@ nav {
   border: 0px;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
+}
+
+.modal-create,
+.modal-edit {
   width: 40vw;
   min-width: 400px;
 }
@@ -374,7 +380,8 @@ nav {
 
 .modal-create-top,
 .modal-edit-top,
-.modal-delete-top {
+.modal-delete-top,
+.modal-view-top {
   background-color: var(--tailwind-sky-500);
   display: flex;
   justify-content: space-between;
@@ -384,7 +391,8 @@ nav {
 
 .modal-create-top>span,
 .modal-edit-top>span,
-.modal-delete-top>span {
+.modal-delete-top>span,
+.view-title {
   font-family: Heebo, sans-serif;
   font-size: 28px;
   font-weight: 600;
@@ -394,7 +402,8 @@ nav {
 
 .modal-create-top>button,
 .modal-edit-top>button,
-.modal-delete-top>button {
+.modal-delete-top>button,
+.modal-view-top>button {
   cursor: pointer;
   background-color: transparent;
   border: none;
@@ -514,33 +523,33 @@ input[name="edit-task-priority"]:checked+label {
 }
 
 .label-low {
-  border: 3px solid var(--priority-low);
-  color: var(--priority-low);
+  border: 3px solid var(--priority-low-green);
+  color: var(--priority-low-green);
 }
 
 .label-low:hover,
 input[value="low"]:checked+label {
-  background-color: var(--priority-low);
+  background-color: var(--priority-low-green);
 }
 
 .label-medium {
-  border: 3px solid var(--priority-medium);
-  color: var(--priority-medium);
+  border: 3px solid var(--priority-medium-yellow);
+  color: var(--priority-medium-yellow);
 }
 
 .label-medium:hover,
 input[value="medium"]:checked+label {
-  background-color: var(--priority-medium);
+  background-color: var(--priority-medium-yellow);
 }
 
 .label-high {
-  border: 3px solid var(--priority-high);
-  color: var(--priority-high);
+  border: 3px solid var(--priority-high-red);
+  color: var(--priority-high-red);
 }
 
 .label-high:hover,
 input[value="high"]:checked+label {
-  background-color: var(--priority-high);
+  background-color: var(--priority-high-red);
 }
 
 .create-add-button,
@@ -566,19 +575,14 @@ input[value="high"]:checked+label {
 
 /* Delete */
 
-.modal-delete {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 0px;
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
+.modal-delete,
+.modal-view {
   width: 30vw;
   min-width: 250px;
 }
 
-.modal-delete::backdrop {
+.modal-delete::backdrop,
+.modal-view::backdrop {
   background: black;
   opacity: 0.3;
 }
@@ -587,7 +591,11 @@ input[value="high"]:checked+label {
   gap: 35px;
 }
 
-.modal-delete-bottom>span {
+.modal-delete-bottom>span,
+.view-desc,
+.view-project,
+.view-task-date,
+.view-task-priority {
   font-family: Heebo, sans-serif;
   font-size: 18px;
   font-weight: 500;
@@ -629,6 +637,32 @@ input[value="high"]:checked+label {
 .delete-yes-button:hover {
   background-color: white;
   color: var(--add-green-dark);
+}
+
+/* View */
+
+.modal-view-bottom {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  height: 100%;
+  width: 100%;
+}
+
+.view-desc {
+  margin-bottom: 30px;
+}
+
+.view-low {
+  color: var(--priority-low-green);
+}
+
+.view-medium {
+  color: var(--priority-medium-yellow);
+}
+
+.view-high {
+  color: var(--priority-high-red);
 }
 
 /* Footer */
