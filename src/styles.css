@@ -25,7 +25,6 @@ html {
   --cancel-red: #f87171;
   --add-green-dark: #22c55e;
   --cancel-red-dark: #ef4444;
-  --nav-width: 300px;
   --priority-low-green: #4ade80;
   --priority-medium-yellow: #fde047;
   --priority-high-red: #ef4444;
@@ -46,7 +45,6 @@ header {
   align-items: center;
   gap: 10px;
   padding: 7px 20px;
-  /* width: 100%; */
 }
 
 .container-header {
@@ -54,6 +52,7 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: max-content;
 }
 
 .logo {
@@ -76,17 +75,18 @@ main {
 nav {
   overflow-y: auto;
   background-color: var(--tailwind-sky-50);
-  min-width: 300px;
   display: flex;
   flex-direction: column;
+  flex-basis: 300px;
   padding: 22px;
+  gap: 25px;
 }
 
 .nav-top {
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .nav-button {
@@ -100,6 +100,7 @@ nav {
   border: none;
   border-radius: 6px;
   background-color: transparent;
+  min-width: max-content;
 }
 
 .nav-button:hover {
@@ -128,15 +129,14 @@ nav {
 .nav-bottom {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 22px;
+  gap: 5px;
 }
 
 .nav-bottom > h1 {
   font-family: Heebo, sans-serif;
   font-size: 2.5rem;
   font-weight: 500;
-  margin: 5px;
+  margin-left: 5px;
 }
 
 .nav-projects {
@@ -166,7 +166,7 @@ nav {
 }
 
 .container-add-project {
-  padding: 15px 0px;
+  margin-top: 15px;
 }
 
 #input-project {
@@ -175,19 +175,18 @@ nav {
   height: 40px;
   font-family: Heebo, sans-serif;
   font-size: 1.6rem;
-  font-weight: 400;
   border: 1px solid black;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .container-add-project > div {
   display: flex;
   gap: 20px;
-  padding: 10px 0px;
 }
 
-.project-add-button,
-.project-cancel-button {
+.project-add,
+.project-cancel {
   cursor: pointer;
   width: 100%;
   height: 40px;
@@ -198,21 +197,21 @@ nav {
   color: white;
 }
 
-.project-add-button {
+.project-add {
   border: 1px solid var(--add-green);
   background-color: var(--add-green);
 }
 
-.project-add-button:hover {
+.project-add:hover {
   background-color: var(--add-green-dark);
 }
 
-.project-cancel-button {
+.project-cancel {
   border: 1px solid var(--cancel-red);
   background-color: var(--cancel-red);
 }
 
-.project-cancel-button:hover {
+.project-cancel:hover {
   background-color: var(--cancel-red-dark);
 }
 
@@ -220,9 +219,9 @@ nav {
 
 .container-project {
   overflow-y: auto;
-  min-width: 350px;
   width: 60%;
-  margin: 0px auto;
+  margin: 0 auto;
+  padding: 20px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -231,23 +230,18 @@ nav {
   font-family: Heebo, sans-serif;
   font-size: 3.2rem;
   font-weight: 600;
-  padding: 20px 0px;
+  margin-bottom: 20px;
   align-self: flex-start;
 }
 
 /* Task */
-
-.container-task {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
 
 .task-list {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: max-content;
 }
 
 .task {
@@ -282,14 +276,13 @@ nav {
 }
 
 .checkbox-div {
-  width: 1.5em;
-  height: 1.5em;
+  width: 20px;
+  height: 20px;
   border: 2px solid var(--tailwind-sky-500);
   border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   cursor: pointer;
 }
 
@@ -335,11 +328,15 @@ nav {
   transform: scale(1.15);
 }
 
-#add-task > img {
+.add-task {
+  padding-left: 16px;
+}
+
+.add-task > img {
   height: 22px;
 }
 
-#add-task > span {
+.add-task > span {
   font-family: Heebo, sans-serif;
   font-size: 1.8rem;
   font-weight: 400;
@@ -350,6 +347,7 @@ nav {
   font-family: Heebo, sans-serif;
   font-size: 1.8rem;
   font-weight: 400;
+  margin-bottom: 20px;
 }
 
 /* Create */
@@ -684,4 +682,30 @@ footer {
 
 .github-icon {
   height: 25px;
+}
+
+@media (max-width: 992px) {
+  html {
+    font-size: 67.5%;
+  }
+}
+
+@media (max-width: 576px) {
+  html {
+    font-size: 72.5%;
+  }
+
+  main {
+    flex-direction: column;
+  }
+
+  nav {
+    flex-basis: 170px;
+  }
+
+  .container-project {
+    margin: 0;
+    padding-inline: 30px;
+    width: 100%;
+  }
 }

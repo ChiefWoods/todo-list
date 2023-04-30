@@ -1,85 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <title>Todo List</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <script defer src="main.js"></script> -->
-  <script defer src="index.js"></script>
-  <link rel="stylesheet" href="styles.css">
-</head>
+  <head>
+    <meta charset="utf-8">
+    <title>Todo List</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <!-- <script defer src="main.js"></script> -->
+    <script defer src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
 
-<body>
-  <header>
-    <div class="container-header">
-      <img src="./icons/clipboard-check-outline.svg" alt="logo" class="logo">
-      <span class="logo-title">Todo List</span>
-    </div>
-  </header>
-  <main>
-    <nav>
-      <ul class="nav-top">
-        <li>
-          <button class="nav-button">
-            <img src="./icons/inbox.svg" alt="inbox" class="nav-icon">
-            <span class="nav-span">Inbox</span>
-            <span class="task-count">1</span>
-          </button>
-        </li>
-        <li>
-          <button class="nav-button">
-            <img src="./icons/calendar-today.svg" alt="today" class="nav-icon">
-            <span class="nav-span">Today</span>
-            <span class="task-count"></span>
-          </button>
-        </li>
-        <li>
-          <button class="nav-button">
-            <img src="./icons/calendar-week.svg" alt="this week" class="nav-icon">
-            <span class="nav-span">This week</span>
-            <span class="task-count"></span>
-          </button>
-        </li>
-      </ul>
-      <div class="nav-bottom">
-        <h1>Projects</h1>
-        <ul class="nav-projects">
+  <body>
+    <header>
+      <div class="container-header">
+        <img src="./icons/clipboard-check-outline.svg" alt="Logo" class="logo">
+        <span class="logo-title">Todo List</span>
+      </div>
+    </header>
+    <main>
+      <nav>
+        <menu class="nav-top">
           <li>
-            <button class="nav-button selected">
-              <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
-              <span class="nav-span">Project A</span>
-              <span class="task-count">3</span>
-              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete-button">
+            <button class="nav-button">
+              <img src="./icons/inbox.svg" alt="Inbox" class="nav-icon">
+              <span class="nav-span">Inbox</span>
+              <span class="task-count">1</span>
             </button>
           </li>
           <li>
             <button class="nav-button">
-              <img src="./icons/format-list-bulleted.svg" alt="list" class="nav-icon">
-              <span class="nav-span">Project B</span>
+              <img src="./icons/calendar-today.svg" alt="Today" class="nav-icon">
+              <span class="nav-span">Today</span>
               <span class="task-count"></span>
-              <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete-button">
             </button>
           </li>
-        </ul>
-        <button class="nav-button" id="add-project">
-          <img src="./icons/plus.svg" alt="add" class="nav-icon">
-          <span class="nav-span">Add Project</span>
-        </button>
-        <div class="container-add-project">
-          <input type="text" name="input-project-title" id="input-project">
-          <div>
-            <button class="project-add-button">Add</button>
-            <button class="project-cancel-button">Cancel</button>
+          <li>
+            <button class="nav-button">
+              <img src="./icons/calendar-week.svg" alt="This week" class="nav-icon">
+              <span class="nav-span">This week</span>
+              <span class="task-count"></span>
+            </button>
+          </li>
+        </menu>
+        <div class="nav-bottom">
+          <h1>Projects</h1>
+          <menu class="nav-projects">
+            <li>
+              <button class="nav-button selected">
+                <img src="./icons/format-list-bulleted.svg" alt="List" class="nav-icon">
+                <span class="nav-span">Project A</span>
+                <span class="task-count">3</span>
+                <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete-button">
+              </button>
+            </li>
+            <li>
+              <button class="nav-button">
+                <img src="./icons/format-list-bulleted.svg" alt="List" class="nav-icon">
+                <span class="nav-span">Project B</span>
+                <span class="task-count"></span>
+                <img src="./icons/close.svg" alt="delete" class="nav-icon project-delete-button">
+              </button>
+            </li>
+          </menu>
+          <button class="nav-button" id="add-project">
+            <img src="./icons/plus.svg" alt="Add" class="nav-icon">
+            <span class="nav-span">Add Project</span>
+          </button>
+          <div class="container-add-project">
+            <input type="text" name="input-project-title" id="input-project">
+            <div>
+              <button class="project-add">Add</button>
+              <button class="project-cancel">Cancel</button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
-    <section class="container-project">
-      <h1 class="project-title">Project A</h1>
-      <div class="container-task">
-        <ul class="task-list">
+      </nav>
+      <section class="container-project">
+        <h1 class="project-title">Project A</h1>
+        <menu class="task-list">
           <li>
             <button class="task task-high" data-task="0">
               <label for="checkbox1">
@@ -88,7 +87,7 @@
               </label>
               <h2 class="task-title">aaa</h2>
               <span class="task-date">19/04/2023</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
+              <img src="./icons/square-edit-outline.svg" alt="Edit" class="task-icon task-edit-button">
               <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
             </button>
           </li>
@@ -100,8 +99,8 @@
               </label>
               <h2 class="task-title" style="text-decoration: line-through;">bbbb</h2>
               <span class="task-date">-</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
+              <img src="./icons/square-edit-outline.svg" alt="Edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="Trash" class="task-icon task-delete-button">
             </button>
           </li>
           <li>
@@ -112,32 +111,33 @@
               </label>
               <h2 class="task-title">ccccc</h2>
               <span class="task-date">26/04/2023</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
+              <img src="./icons/square-edit-outline.svg" alt="Edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="Trash" class="task-icon task-delete-button">
             </button>
           </li>
-        </ul>
-        <button class="task" id="add-task">
-          <img src="./icons/plus.svg" alt="add">
-          <span>Add Task</span>
-        </button>
-      </div>
-    </section>
-    <!-- <section class="container-project">
-      <h1 class="project-title">Project B</h1>
-      <div class="container-task">
-        <ul class="task-list">
-        </ul>
-        <button class="task" id="add-task">
-          <img src="./icons/plus.svg" alt="add">
-          <span>Add Task</span>
-        </button>
-      </div>
-    </section> -->
-    <!-- <section class="container-project">
-      <h1 class="project-title">Inbox</h1>
-      <div class="container-task">
-        <ul class="task-list">
+          <li>
+            <button class="task add-task">
+              <img src="./icons/plus.svg" alt="Add">
+              <span>Add Task</span>
+            </button>
+          </li>
+        </menu>
+      </section>
+      <!-- <section class="container-project">
+        <h1 class="project-title">Project B</h1>
+        <h2 class="empty-task">It's quite empty here...</h2>
+        <menu class="task-list">
+          <li>
+            <button class="task add-task">
+              <img src="./icons/plus.svg" alt="Add">
+              <span>Add Task</span>
+            </button>
+          </li>
+        </menu>
+      </section> -->
+      <!-- <section class="container-project">
+        <h1 class="project-title">Inbox</h1>
+        <menu class="task-list">
           <li>
             <button class="task task-low">
               <label for="checkbox3">
@@ -146,148 +146,149 @@
               </label>
               <h2 class="task-title">dddddd</h2>
               <span class="task-date">24/04/2023</span>
-              <img src="./icons/square-edit-outline.svg" alt="edit" class="task-icon task-edit-button">
-              <img src="./icons/delete.svg" alt="trash" class="task-icon task-delete-button">
+              <img src="./icons/square-edit-outline.svg" alt="Edit" class="task-icon task-edit-button">
+              <img src="./icons/delete.svg" alt="Trash" class="task-icon task-delete-button">
             </button>
           </li>
-        </ul>
-        <button class="task" id="add-task">
-          <img src="./icons/plus.svg" alt="add">
-          <span>Add Task</span>
-        </button>
-      </div>
-    </section> -->
-    <!-- <section class="container-project">
+          <li>
+            <button class="task add-task">
+              <img src="./icons/plus.svg" alt="Add">
+              <span>Add Task</span>
+            </button>
+          </li>
+        </menu>
+      </section> -->
+      <!-- <section class="container-project">
       <h1 class="project-title">This week</h1>
-      <div class="container-task">
         <h2 class="empty-task">It's quite empty here...</h2>
-        <ul class="task-list">
-        </ul>
-      </div>
+        <menu class="task-list">
+        </menu>
     </section> -->
-    <dialog class="modal-create">
-      <div class="modal-create-top">
-        <span>Create Task</span>
-        <button>
-          <img src="./icons/close-white.svg" alt="exit" class="create-exit exit-button">
-        </button>
-      </div>
-      <form class="modal-create-bottom" method="dialog">
-        <input type="text" name="create-task-title" class="create-task-title" placeholder="Title">
-        <textarea name="create-task-desc" class="create-task-desc" placeholder="Description"></textarea>
-        <div class="container-date">
-          <label for="create-task-date">Due Date :</label>
-          <input type="date" name="create-task-date" id="create-task-date">
+      <dialog class="modal-create">
+        <div class="modal-create-top">
+          <span>Create Task</span>
+          <button>
+            <img src="./icons/close-white.svg" alt="Exit" class="create-exit exit-button">
+          </button>
         </div>
-        <div class="container-priority">
-          <span>Priority :</span>
-          <div class="container-priority-level">
-            <input type="radio" name="create-task-priority" id="create-low" value="low" required>
-            <label for="create-low" class="label-low">Low</label>
-            <input type="radio" name="create-task-priority" id="create-medium" value="medium">
-            <label for="create-medium" class="label-medium">Medium</label>
-            <input type="radio" name="create-task-priority" id="create-high" value="high">
-            <label for="create-high" class="label-high">High</label>
+        <form class="modal-create-bottom" method="dialog">
+          <input type="text" name="create-task-title" class="create-task-title" placeholder="Title">
+          <textarea name="create-task-desc" class="create-task-desc" placeholder="Description"></textarea>
+          <div class="container-date">
+            <label for="create-task-date">Due Date :</label>
+            <input type="date" name="create-task-date" id="create-task-date">
           </div>
-          <button class="create-add-button" type="submit">Add</button>
-        </div>
-      </form>
-    </dialog>
-    <dialog class="modal-edit">
-      <div class="modal-edit-top">
-        <span>Edit Task</span>
-        <button>
-          <img src="./icons/close-white.svg" alt="exit" class="edit-exit exit-button">
-        </button>
-      </div>
-      <form class="modal-edit-bottom" method="dialog">
-        <input type="text" name="edit-task-title" class="edit-task-title" placeholder="Title" value="aaa">
-        <textarea name="edit-task-desc" class="edit-task-desc"
-          placeholder="Description">sample description for aaa</textarea>
-        <div class="container-date">
-          <label for="edit-task-date">Due Date :</label>
-          <input type="date" name="edit-task-date" id="edit-task-date" value="2023-04-19">
-        </div>
-        <div class="container-priority">
-          <span>Priority :</span>
-          <div class="container-priority-level">
-            <input type="radio" name="edit-task-priority" id="edit-low" value="low" required>
-            <label for="edit-low" class="label-low">Low</label>
-            <input type="radio" name="edit-task-priority" id="edit-medium" value="medium">
-            <label for="edit-medium" class="label-medium">Medium</label>
-            <input type="radio" name="edit-task-priority" id="edit-high" value="high" checked>
-            <label for="edit-high" class="label-high">High</label>
+          <div class="container-priority">
+            <span>Priority :</span>
+            <div class="container-priority-level">
+              <input type="radio" name="create-task-priority" id="create-low" value="low" required>
+              <label for="create-low" class="label-low">Low</label>
+              <input type="radio" name="create-task-priority" id="create-medium" value="medium">
+              <label for="create-medium" class="label-medium">Medium</label>
+              <input type="radio" name="create-task-priority" id="create-high" value="high">
+              <label for="create-high" class="label-high">High</label>
+            </div>
+            <button class="create-add-button" type="submit">Add</button>
           </div>
-          <button class="edit-change-button" type="submit">Edit</button>
+        </form>
+      </dialog>
+      <dialog class="modal-edit">
+        <div class="modal-edit-top">
+          <span>Edit Task</span>
+          <button>
+            <img src="./icons/close-white.svg" alt="Exit" class="edit-exit exit-button">
+          </button>
         </div>
-      </form>
-    </dialog>
-    <dialog class="modal-delete">
-      <div class="modal-delete-top">
-        <span>Confirm Delete</span>
-        <button>
-          <img src="./icons/close-white.svg" alt="exit" class="delete-exit exit-button">
-        </button>
-      </div>
-      <div class="modal-delete-bottom">
-        <span>Are you sure you want to delete this task?</span>
-        <div class="container-confirm">
-          <button class="delete-cancel-button">Cancel</button>
-          <button class="delete-yes-button">Yes</button>
+        <form class="modal-edit-bottom" method="dialog">
+          <input type="text" name="edit-task-title" class="edit-task-title" placeholder="Title" value="aaa">
+          <textarea name="edit-task-desc" class="edit-task-desc"
+            placeholder="Description">sample description for aaa</textarea>
+          <div class="container-date">
+            <label for="edit-task-date">Due Date :</label>
+            <input type="date" name="edit-task-date" id="edit-task-date" value="2023-04-19">
+          </div>
+          <div class="container-priority">
+            <span>Priority :</span>
+            <div class="container-priority-level">
+              <input type="radio" name="edit-task-priority" id="edit-low" value="low" required>
+              <label for="edit-low" class="label-low">Low</label>
+              <input type="radio" name="edit-task-priority" id="edit-medium" value="medium">
+              <label for="edit-medium" class="label-medium">Medium</label>
+              <input type="radio" name="edit-task-priority" id="edit-high" value="high" checked>
+              <label for="edit-high" class="label-high">High</label>
+            </div>
+            <button class="edit-change-button" type="submit">Edit</button>
+          </div>
+        </form>
+      </dialog>
+      <dialog class="modal-delete">
+        <div class="modal-delete-top">
+          <span>Confirm Delete</span>
+          <button>
+            <img src="./icons/close-white.svg" alt="Exit" class="delete-exit exit-button">
+          </button>
         </div>
-      </div>
-    </dialog>
-    <dialog class="modal-view" data-view="0">
-      <div class="modal-view-top">
-        <h1 class="view-title">aaa</h1>
-        <button>
-          <img src="./icons/close-white.svg" alt="exit" class="view-exit exit-button">
-        </button>
-      </div>
-      <div class="modal-view-bottom">
-        <p class="view-desc">Triple a</p>
-        <span class="view-project">Project : Project A</span>
-        <span class="view-task-date">Due Date : 19/04/2023</span>
-        <span class="view-task-priority">Priority : <span class="view-task-priority-level view-high">High</span></span>
-      </div>
-    </dialog>
-    <dialog class="modal-view" data-view="1">
-      <div class="modal-view-top">
-        <h1 class="view-title">bbbb</h1>
-        <button>
-          <img src="./icons/close-white.svg" alt="exit" class="view-exit exit-button">
-        </button>
-      </div>
-      <div class="modal-view-bottom">
-        <p class="view-desc">Quadruple b</p>
-        <span class="view-project">Project : Project A</span>
-        <span class="view-task-date">Due Date : -</span>
-        <span class="view-task-priority">Priority : <span class="view-task-priority-level view-medium">Medium</span></span>
-      </div>
-    </dialog>
-    <dialog class="modal-view" data-view="2">
-      <div class="modal-view-top">
-        <h1 class="view-title">ccccc</h1>
-        <button>
-          <img src="./icons/close-white.svg" alt="exit" class="view-exit exit-button">
-        </button>
-      </div>
-      <div class="modal-view-bottom">
-        <p class="view-desc">Lots of c</p>
-        <span class="view-project">Project : Project A</span>
-        <span class="view-task-date">Due Date : 26/04/2023</span>
-        <span class="view-task-priority">Priority : <span class="view-task-priority-level view-low">Low</span></span>
-      </div>
-    </dialog>
-  </main>
-  <footer>
-    <span class="made-by">Copyright @
-      <script>document.write(new Date().getFullYear())</script> ChiefWoods
-    </span>
-    <a class="github-link" href="https://github.com/ChiefWoods/todo-list" target="_blank">
-      <img src="./icons/github.svg" class="github-icon" alt="GitHub">
-    </a>
-  </footer>
-</body>
+        <div class="modal-delete-bottom">
+          <span>Are you sure you want to delete this task?</span>
+          <div class="container-confirm">
+            <button class="delete-cancel-button">Cancel</button>
+            <button class="delete-yes-button">Yes</button>
+          </div>
+        </div>
+      </dialog>
+      <dialog class="modal-view" data-view="0">
+        <div class="modal-view-top">
+          <h1 class="view-title">aaa</h1>
+          <button>
+            <img src="./icons/close-white.svg" alt="Exit" class="view-exit exit-button">
+          </button>
+        </div>
+        <div class="modal-view-bottom">
+          <p class="view-desc">Triple a</p>
+          <span class="view-project">Project : Project A</span>
+          <span class="view-task-date">Due Date : 19/04/2023</span>
+          <span class="view-task-priority">Priority : <span
+              class="view-task-priority-level view-high">High</span></span>
+        </div>
+      </dialog>
+      <dialog class="modal-view" data-view="1">
+        <div class="modal-view-top">
+          <h1 class="view-title">bbbb</h1>
+          <button>
+            <img src="./icons/close-white.svg" alt="Exit" class="view-exit exit-button">
+          </button>
+        </div>
+        <div class="modal-view-bottom">
+          <p class="view-desc">Quadruple b</p>
+          <span class="view-project">Project : Project A</span>
+          <span class="view-task-date">Due Date : -</span>
+          <span class="view-task-priority">Priority : <span
+              class="view-task-priority-level view-medium">Medium</span></span>
+        </div>
+      </dialog>
+      <dialog class="modal-view" data-view="2">
+        <div class="modal-view-top">
+          <h1 class="view-title">ccccc</h1>
+          <button>
+            <img src="./icons/close-white.svg" alt="Exit" class="view-exit exit-button">
+          </button>
+        </div>
+        <div class="modal-view-bottom">
+          <p class="view-desc">Lots of c</p>
+          <span class="view-project">Project : Project A</span>
+          <span class="view-task-date">Due Date : 26/04/2023</span>
+          <span class="view-task-priority">Priority : <span class="view-task-priority-level view-low">Low</span></span>
+        </div>
+      </dialog>
+    </main>
+    <footer>
+      <span class="made-by">Copyright @
+        <script>document.write(new Date().getFullYear())</script> ChiefWoods
+      </span>
+      <a class="github-link" href="https://github.com/ChiefWoods/todo-list" target="_blank">
+        <img src="./icons/github.svg" class="github-icon" alt="GitHub">
+      </a>
+    </footer>
+  </body>
 
 </html>
