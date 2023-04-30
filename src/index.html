@@ -32,12 +32,14 @@
           <button class="nav-button">
             <img src="./icons/calendar-today.svg" alt="today" class="nav-icon">
             <span class="nav-span">Today</span>
+            <span class="task-count"></span>
           </button>
         </li>
         <li>
           <button class="nav-button">
             <img src="./icons/calendar-week.svg" alt="this week" class="nav-icon">
             <span class="nav-span">This week</span>
+            <span class="task-count"></span>
           </button>
         </li>
       </ul>
@@ -279,9 +281,11 @@
     </dialog>
   </main>
   <footer>
-    <span class="made-by">Made by ChiefWoods</span>
+    <span class="made-by">Copyright @
+      <script>document.write(new Date().getFullYear())</script> ChiefWoods
+    </span>
     <a class="github-link" href="https://github.com/ChiefWoods/todo-list" target="_blank">
-      <img src="icons/github.svg" class="github-icon" alt="GitHub">
+      <img src="./icons/github.svg" class="github-icon" alt="GitHub">
     </a>
   </footer>
 </body>
