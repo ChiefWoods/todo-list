@@ -11,6 +11,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Todo List',
+      favicon: './src/icons/clipboard-check-outline.svg',
       template: './src/template.html'
     })
   ],
@@ -21,7 +22,7 @@ module.exports = {
       const filepath = path.dirname(pathData.filename).split('/').slice(1).join('/');
       return `${filepath}/[name][ext]`;
     },
-    // clean: true
+    clean: true
   },
   module: {
     rules: [
