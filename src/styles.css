@@ -153,15 +153,16 @@ nav {
   color: gray;
 }
 
-.project-delete-button {
+.project-delete {
   margin-left: auto;
+  visibility: hidden;
 }
 
-.project-delete-button:hover {
+.project-delete:hover {
   transform: scale(1.3);
 }
 
-#add-project > .nav-span {
+.add-project > .nav-span {
   font-weight: 500;
 }
 
@@ -169,7 +170,7 @@ nav {
   margin-top: 15px;
 }
 
-#input-project {
+.input-project {
   width: 100%;
   padding: 6px 12px;
   height: 40px;
@@ -215,7 +216,7 @@ nav {
   background-color: var(--cancel-red-dark);
 }
 
-/* Project */
+/* Section */
 
 .container-project {
   overflow-y: auto;
@@ -226,7 +227,7 @@ nav {
   flex-direction: column;
 }
 
-.project-title {
+.project-name {
   font-family: Heebo, sans-serif;
   font-size: 3.2rem;
   font-weight: 600;
@@ -308,6 +309,10 @@ nav {
   padding: 0px 12px;
 }
 
+.completed {
+  text-decoration: line-through;
+}
+
 .task-date {
   font-family: Heebo, sans-serif;
   font-size: 1.5rem;
@@ -317,14 +322,14 @@ nav {
 }
 
 .task-edit-button,
-.task-delete-button {
+.task-trash-button {
   padding: 0px 8px;
   cursor: pointer;
   height: 22px;
 }
 
 .task-edit-button:hover,
-.task-delete-button:hover {
+.task-trash-button:hover {
   transform: scale(1.15);
 }
 
@@ -348,6 +353,19 @@ nav {
   font-size: 1.8rem;
   font-weight: 400;
   margin-bottom: 20px;
+}
+
+/* Overlay */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: none;
 }
 
 /* Create */
@@ -593,8 +611,8 @@ input[value="high"]:checked + label {
 .modal-delete-bottom > span,
 .view-desc,
 .view-project,
-.view-task-date,
-.view-task-priority {
+.view-date,
+.view-priority {
   font-family: Heebo, sans-serif;
   font-size: 1.8rem;
   font-weight: 500;
@@ -617,7 +635,7 @@ input[value="high"]:checked + label {
   cursor: pointer;
 }
 
-.delete-cancel-button {
+.delete-confirm-button {
   background-color: var(--cancel-red-dark);
   border: 3px solid var(--cancel-red-dark);
   transition: all 0.2s;
@@ -633,7 +651,7 @@ input[value="high"]:checked + label {
   border: 3px solid var(--add-green-dark);
 }
 
-.delete-yes-button:hover {
+.delete-confirm-button:hover {
   background-color: white;
   color: var(--add-green-dark);
 }
