@@ -21,10 +21,7 @@ html {
   --tailwind-sky-200: #bae6fd;
   --tailwind-sky-400: #38bdf8;
   --tailwind-sky-500: #0ea5e9;
-  --add-green: #4ade80;
-  --cancel-red: #f87171;
-  --add-green-dark: #22c55e;
-  --cancel-red-dark: #ef4444;
+  --delete-red: #ef4444;
   --priority-low-green: #4ade80;
   --priority-medium-yellow: #fde047;
   --priority-high-red: #ef4444;
@@ -143,7 +140,11 @@ nav {
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
+}
+
+.nav-button:hover .project-delete{
+  visibility: visible;
 }
 
 .task-count {
@@ -166,10 +167,6 @@ nav {
   font-weight: 500;
 }
 
-.container-add-project {
-  margin-top: 15px;
-}
-
 .input-project {
   width: 100%;
   padding: 6px 12px;
@@ -178,7 +175,7 @@ nav {
   font-size: 1.6rem;
   border: 1px solid black;
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .container-add-project > div {
@@ -193,27 +190,30 @@ nav {
   height: 40px;
   font-family: Heebo, sans-serif;
   font-size: 1.8rem;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 6px;
-  color: white;
 }
 
 .project-add {
-  border: 1px solid var(--add-green);
-  background-color: var(--add-green);
+  border: 3px solid var(--tailwind-sky-400);
+  background-color: var(--tailwind-sky-400);
+  color: white;
 }
 
 .project-add:hover {
-  background-color: var(--add-green-dark);
+  background-color: white;
+  color: var(--tailwind-sky-400);
 }
 
 .project-cancel {
-  border: 1px solid var(--cancel-red);
-  background-color: var(--cancel-red);
+  border: 3px solid lightgrey;
+  background-color: transparent;
+  color: lightgrey;
 }
 
 .project-cancel:hover {
-  background-color: var(--cancel-red-dark);
+  background-color: lightgrey;
+  color: white;
 }
 
 /* Section */
@@ -379,8 +379,8 @@ nav {
   left: 50%;
   transform: translate(-50%, -50%);
   border: 0px;
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
+  z-index: 10;
 }
 
 .modal-create,
@@ -636,24 +636,13 @@ input[value="high"]:checked + label {
 }
 
 .delete-confirm-button {
-  background-color: var(--cancel-red-dark);
-  border: 3px solid var(--cancel-red-dark);
-  transition: all 0.2s;
-}
-
-.delete-cancel-button:hover {
-  background-color: white;
-  color: var(--cancel-red-dark);
-}
-
-.delete-yes-button {
-  background-color: var(--add-green-dark);
-  border: 3px solid var(--add-green-dark);
+  background-color: var(--delete-red);
+  border: 3px solid var(--delete-red);
 }
 
 .delete-confirm-button:hover {
   background-color: white;
-  color: var(--add-green-dark);
+  color: var(--delete-red);
 }
 
 /* View */
