@@ -10,23 +10,33 @@ export default class Storage {
     static getTodoList() {
         const todoList = Object.assign(new TodoList(), JSON.parse(localStorage.getItem('todoList')))
 
-        todoList.setProjects(todoList.getProjects()
+        todoList.setProjects(todoList.getAllProjects()
             .map(project => Object.assign(new Project(), project))
         )
 
-        todoList.getProjects().forEach(project =>
-            project.setTasks(project.getTasks()
+        todoList.getAllProjects().forEach(project =>
+            project.setTasks(project.getAllTasks()
                 .map(task => Object.assign(new Task(), task))
             )
         )
 
-        return todoList;    
+        return todoList;
     }
 
     static updateAllProjects() {
         const todoList = Storage.getTodoList();
         todoList.updateAllProjects();
         Storage.setTodoList(todoList);
+    }
+
+    static getAllProjects() {
+        const todoList = Storage.getTodoList();
+        return todoList.getAllProjects();
+    }
+
+    static containsProject(projectName) {
+        const todoList = Storage.getTodoList();
+        return todoList.contains(projectName);
     }
 
     static addProject(projectName) {
@@ -39,6 +49,36 @@ export default class Storage {
         const todoList = Storage.getTodoList();
         todoList.deleteProject(projectName);
         Storage.setTodoList(todoList);
+    }
+
+    static getTaskCount(projectName) {
+        const todoList = Storage.getTodoList();
+        return todoList.getProject(projectName).getTaskCount();
+    }
+
+    static getIndexCount(projectName) {
+        const todoList = Storage.getTodoList();
+        return todoList.getProject(projectName).getIndexCount();
+    }
+
+    static getAllTasks(projectName) {
+        const todoList = Storage.getTodoList();
+        return todoList.getProject(projectName).getAllTasks();
+    }
+
+    static getTask(projectName, taskTitle) {
+        const todoList = Storage.getTodoList();
+        return todoList.getProject(projectName).getTask(taskTitle);
+    }
+
+    static isProjectEmpty(projectName) {
+        const todoList = Storage.getTodoList();
+        return todoList.getProject(projectName).getTaskCount() === 0;
+    }
+
+    static containsTask(projectName, taskTitle) {
+        const todoList = Storage.getTodoList();
+        return todoList.getProject(projectName).contains(taskTitle);
     }
 
     static addTask(projectName, title, desc, date, priority) {
@@ -68,8 +108,12 @@ export default class Storage {
         Storage.setTodoList(todoList);
     }
 
-    static isProjectEmpty(projectName) {
+    static getProjectName(taskTitle) {
         const todoList = Storage.getTodoList();
-        return todoList.getProject(projectName).getTaskCount() === 0;
+        for (const project of todoList.getAllProjects()) {
+            if (project.contains(taskTitle)) {
+                return project.getName();
+            }
+        }
     }
 }

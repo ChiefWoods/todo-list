@@ -193,10 +193,10 @@ export const Dialog = (() => {
       e.preventDefault();
       removeDialog();
 
-      Storage.addTask(projectName, ...Object.values(properties), Storage.getTodoList().getProject(projectName).getIndexCount());
+      Storage.addTask(projectName, ...Object.values(properties), Storage.getIndexCount(projectName));
       Storage.updateAllProjects();
       Nav.updateTaskCount();
-      Section.addTask(Storage.getTodoList().getProject(projectName).getTask(properties.title));
+      Section.addTask(Storage.getTask(projectName,properties.title));
     })
   }
 
@@ -212,7 +212,7 @@ export const Dialog = (() => {
       Storage.updateTask(projectName, oldTitle, ...Object.values(properties));
       Storage.updateAllProjects();
       Nav.updateTaskCount();
-      Section.editTask(Storage.getTodoList().getProject(projectName).getTask(properties.title), oldTitle);
+      Section.editTask(Storage.getTask(projectName, properties.title), oldTitle);
     })
   }
 

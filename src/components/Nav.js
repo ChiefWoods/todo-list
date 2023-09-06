@@ -40,7 +40,7 @@ export const Nav = (() => {
     const div = Main.createText('div', ['nav-bottom'], '');
     const h1 = Main.createText('h1', '', 'Projects');
     const navProjects = Main.createText('menu', ['nav-projects'], '');
-    const allProjects = Storage.getTodoList().getProjects().filter(project => !['Today', 'This week', 'Important'].includes(project.getName()));
+    const allProjects = Storage.getAllProjects().filter(project => !['Today', 'This week', 'Important'].includes(project.getName()));
 
     const navProjectsLi = allProjects.map(project =>
       createProjectLi(
@@ -106,7 +106,7 @@ export const Nav = (() => {
 
       if (projectName === '') {
         alert('Project name cannot be empty');
-      } else if (Storage.getTodoList().contains(projectName)) {
+      } else if (Storage.containsProject(projectName)) {
         alert('Project name already exists');
       } else {
         Storage.addProject(projectName);
@@ -176,7 +176,7 @@ export const Nav = (() => {
   }
 
   const getTaskCountString = projectName => {
-    const taskCount = Storage.getTodoList().getProject(projectName).getTaskCount();
+    const taskCount = Storage.getTaskCount(projectName);
     return taskCount === 0 ? '' : taskCount.toString();
   }
 

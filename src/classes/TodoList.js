@@ -11,7 +11,7 @@ export default class TodoList {
         ];
     }
 
-    getProjects() {
+    getAllProjects() {
         return this.projects;
     }
 
@@ -36,37 +36,31 @@ export default class TodoList {
     }
 
     updateTodayProjects() {
-        this.updateProject('Today');
-
-        this.getProject('Today').tasks =
+        this.updateProject('Today').tasks =
             this.sortByPriority(
-                this.getProject('Today').getTasks()
+                this.getProject('Today').getAllTasks()
             )
-        this.reindexTasks(this.getProject('Today').getTasks());
+        this.reindexTasks(this.getProject('Today').getAllTasks());
         this.getProject('Today').updateTaskCount();
         this.getProject('Today').updateIndexCount();
     }
 
     updateThisWeekProjects() {
-        this.updateProject('This week');
-
-        this.getProject('This week').tasks =
+        this.updateProject('This week').tasks =
             this.sortByDate(
-                this.getProject('This week').getTasks()
+                this.getProject('This week').getAllTasks()
             )
-        this.reindexTasks(this.getProject('This week').getTasks());
+        this.reindexTasks(this.getProject('This week').getAllTasks());
         this.getProject('This week').updateTaskCount();
         this.getProject('This week').updateIndexCount();
     }
 
     updateImportantProjects() {
-        this.updateProject('Important');
-
-        this.getProject('Important').tasks =
+        this.updateProject('Important').tasks =
             this.sortByDate(
-                this.getProject('Important').getTasks()
+                this.getProject('Important').getAllTasks()
             )
-        this.reindexTasks(this.getProject('This week').getTasks());
+        this.reindexTasks(this.getProject('This week').getAllTasks());
         this.getProject('This week').updateTaskCount();
         this.getProject('This week').updateIndexCount();
     }
@@ -89,6 +83,8 @@ export default class TodoList {
                 })
             }
         })
+
+        return this.getProject(projectName);
     }
 
     updateAllProjects() {
@@ -102,10 +98,10 @@ export default class TodoList {
     }
 
     sortByPriority(tasks) {
-        return tasks.sort((a, b) => this.score(a) - this.score(b))
+        return tasks.sort((a, b) => this.priorityToScore(a) - this.priorityToScore(b))
     }
 
-    score(task) {
+    priorityToScore(task) {
         return task.getPriority() === 'high' ? -3 : task.getPriority() === 'medium' ? -2 : -1;
     }
 

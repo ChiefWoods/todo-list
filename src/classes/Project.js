@@ -28,7 +28,7 @@ export default class Project {
         this.indexCount = this.tasks.length;
     }
 
-    getTasks() {
+    getAllTasks() {
         return this.tasks;
     }
 

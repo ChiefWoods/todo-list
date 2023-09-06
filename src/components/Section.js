@@ -17,7 +17,7 @@ export const Section = (() => {
     if (Storage.isProjectEmpty(projectName)) {
       h1.insertAdjacentElement('afterend', createEmptyTask());
     } else {
-      const allTasks = Storage.getTodoList().getProject(projectName).getTasks();
+      const allTasks = Storage.getAllTasks(projectName);
       menu.append(...allTasks.map(task => createTaskLi(task)));
     }
 
@@ -117,7 +117,7 @@ export const Section = (() => {
       const projectName = document.querySelector('.project-name').textContent;
       const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
 
-      Dialog.showViewModal(projectName, Storage.getTodoList().getProject(projectName).getTask(taskTitle));
+      Dialog.showViewModal(projectName, Storage.getTask(projectName, taskTitle));
     })
   }
 
@@ -139,7 +139,7 @@ export const Section = (() => {
       const projectName = document.querySelector('.project-name').textContent;
       const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
 
-      Dialog.showCreateEditModal(projectName, Storage.getTodoList().getProject(projectName).getTask(taskTitle), 'edit');
+      Dialog.showCreateEditModal(projectName, Storage.getTask(projectName, taskTitle), 'edit');
     })
   }
 
