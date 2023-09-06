@@ -18,6 +18,8 @@ export const Main = (() => {
 
         main.append(sideNav, view, overlay);
         document.body.append(Header.createHeader(), main, Footer.createFooter());
+        
+        changeDocumentTitle();
     }
 
     const createText = (element, className, content) => {
@@ -37,9 +39,15 @@ export const Main = (() => {
         return img;
     }
 
+    const changeDocumentTitle = () => {
+        const projectName = document.querySelector('.project-name').textContent;
+        projectName ? document.title = `${projectName} - Todo List` : document.title = 'Todo List';
+    }
+
     return {
         initialize,
         createText,
-        createImg
+        createImg,
+        changeDocumentTitle
     }
 })();

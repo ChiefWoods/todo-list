@@ -153,6 +153,8 @@ export const Nav = (() => {
       const projectName = projectButton.querySelector('.nav-span').textContent;
 
       document.querySelector('.container-project').replaceWith(Section.createSection(projectName));
+
+      Main.changeDocumentTitle();
     })
   }
 

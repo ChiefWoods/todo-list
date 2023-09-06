@@ -162,6 +162,7 @@ export const Dialog = (() => {
           Nav.updateTaskCount();
           if (span.closest('.project').classList.contains('selected')) {
             document.querySelector('.container-project').replaceWith(Section.createEmptySection());
+            Main.changeDocumentTitle();
           }
           break;
         }
