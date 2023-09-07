@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 import { Main } from './Main.js';
 import { Dialog } from './Dialog.js';
 import Storage from '../classes/Storage.js';
@@ -59,8 +59,8 @@ export const Section = (() => {
 
     label.append(input, div);
 
-    const h2 = Main.createText('h2', lineThroughTitle(task.getCompleted()), task.getTitle());
-    const span = Main.createText('span', ['task-date'], dayMonthYear(task.getDueDate()));
+    const h2 = Main.createText('h2', isTaskCompleted(task.getCompleted()), task.getTitle());
+    const span = Main.createText('span', isTaskExpired(task.getDueDate()), dayMonthYear(task.getDueDate()));
 
     const editIcon = Main.createImg(edit, ['task-icon', 'task-edit-button'], 'Edit');
     addEditHandler(editIcon);
@@ -70,7 +70,7 @@ export const Section = (() => {
 
     button.append(label, h2, span, editIcon, trashIcon);
     li.append(button);
-    
+
     return li;
   }
 
@@ -85,11 +85,6 @@ export const Section = (() => {
     addNewTaskHandler(li);
 
     return li;
-  }
-
-  const removeEmptyMessage = () => {
-    const emptyMessage = document.querySelector('.empty-task');
-    if (emptyMessage) emptyMessage.remove();
   }
 
   const removeTaskLi = li => {
@@ -114,8 +109,8 @@ export const Section = (() => {
     ele.addEventListener('click', e => {
       if (['task-checkbox', 'checkbox-div'].includes(e.target.className)) return;
 
-      const projectName = document.querySelector('.project-name').textContent;
       const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
+      const projectName = Storage.getProjectName(taskTitle);
 
       Dialog.showViewModal(projectName, Storage.getTask(projectName, taskTitle));
     })
@@ -123,8 +118,8 @@ export const Section = (() => {
 
   const addCheckHandler = input => {
     input.addEventListener('click', e => {
-      const projectName = document.querySelector('.project-name').textContent;
       const taskHeader = e.target.closest('.task').querySelector('.task-title');
+      const projectName = Storage.getProjectName(taskHeader.textContent);
 
       taskHeader.classList.toggle('completed');
 
@@ -136,8 +131,8 @@ export const Section = (() => {
     icon.addEventListener('click', e => {
       e.stopPropagation();
 
-      const projectName = document.querySelector('.project-name').textContent;
       const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
+      const projectName = Storage.getProjectName(taskTitle);
 
       Dialog.showCreateEditModal(projectName, Storage.getTask(projectName, taskTitle), 'edit');
     })
@@ -147,41 +142,34 @@ export const Section = (() => {
     icon.addEventListener('click', e => {
       e.stopPropagation();
 
-      const projectName = document.querySelector('.project-name').textContent;
       const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
+      const projectName = Storage.getProjectName(taskTitle);
 
       Dialog.showDeleteModal(projectName, taskTitle);
     })
   }
 
-  const addTask = task => {
-    removeEmptyMessage();
-
-    document.querySelector('.add-task').parentNode.insertAdjacentElement('beforebegin', createTaskLi(task));
-  }
-
-  const editTask = (task, oldTitle) => {
-    for (const title of document.querySelectorAll('.task-title')) {
-      if (title.textContent === oldTitle) {
-        title.closest('li').replaceWith(createTaskLi(task));
-        break;
-      }
-    }
+  const replaceSection = projectName => {
+    projectName ? document.querySelector('.container-project').replaceWith(createSection(projectName))
+      : document.querySelector('.container-project').replaceWith(createEmptySection());
   }
 
   const dayMonthYear = date => {
-    return date === null ? '-' : format(new Date(date), 'dd/MM/yyyy');
+    return date ? format(new Date(date), 'dd/MM/yyyy') : '-';
   }
 
-  const lineThroughTitle = completed => {
+  const isTaskCompleted = completed => {
     return completed ? ['task-title', 'completed'] : ['task-title'];
+  }
+
+  const isTaskExpired = date => {
+    return isPast(new Date(date)) ? ['task-date', 'expired'] : ['task-date'];
   }
 
   return {
     createSection,
     createEmptySection,
     removeTaskLi,
-    addTask,
-    editTask
+    replaceSection
   }
 })();

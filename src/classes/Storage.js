@@ -48,6 +48,7 @@ export default class Storage {
     static deleteProject(projectName) {
         const todoList = Storage.getTodoList();
         todoList.deleteProject(projectName);
+        todoList.updateAllProjects();
         Storage.setTodoList(todoList);
     }
 
@@ -84,12 +85,14 @@ export default class Storage {
     static addTask(projectName, title, desc, date, priority) {
         const todoList = Storage.getTodoList();
         todoList.getProject(projectName).addTask(new Task(title, desc, date, priority, false, todoList.getProject(projectName).getIndexCount()));
+        todoList.updateAllProjects();
         Storage.setTodoList(todoList);
     }
 
     static deleteTask(projectName, taskTitle) {
         const todoList = Storage.getTodoList();
         todoList.getProject(projectName).deleteTask(taskTitle);
+        todoList.updateAllProjects();
         Storage.setTodoList(todoList);
     }
 
@@ -99,18 +102,21 @@ export default class Storage {
         todoList.getProject(projectName).getTask(newTitle).setDescription(newDesc);
         todoList.getProject(projectName).getTask(newTitle).setDueDate(newDueDate);
         todoList.getProject(projectName).getTask(newTitle).setPriority(newPriority);
+        todoList.updateAllProjects();
         Storage.setTodoList(todoList);
     }
 
     static toggleTaskCompleted(projectName, taskTitle) {
         const todoList = Storage.getTodoList();
         todoList.getProject(projectName).getTask(taskTitle).toggleCompleted();
+        todoList.updateAllProjects();
         Storage.setTodoList(todoList);
     }
 
     static getProjectName(taskTitle) {
         const todoList = Storage.getTodoList();
-        for (const project of todoList.getAllProjects()) {
+        for (const project of todoList.getAllProjects().filter(project =>
+            !['Today', 'This week', 'Important'].includes(project.getName()))) {
             if (project.contains(taskTitle)) {
                 return project.getName();
             }

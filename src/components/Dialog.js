@@ -32,7 +32,7 @@ export const Dialog = (() => {
     div.append(deleteButton);
     modalBottom.append(spanConfirm, div);
     dialog.append(modalTop, modalBottom);
-    document.querySelector('Main').append(dialog);
+    document.querySelector('main').append(dialog);
 
     toggleOverlay();
   }
@@ -59,7 +59,7 @@ export const Dialog = (() => {
     priority.append(priorityLevel);
     modalBottom.append(desc, project, date, priority);
     dialog.append(modalTop, modalBottom);
-    document.querySelector('Main').append(dialog);
+    document.querySelector('main').append(dialog);
 
     toggleOverlay();
   }
@@ -133,7 +133,7 @@ export const Dialog = (() => {
     divPriority.append(divPriorityLvl, addEditButton);
     form.append(inputText, textarea, divDate, divPriority);
     dialog.append(modalTop, form);
-    document.querySelector('Main').append(dialog);
+    document.querySelector('main').append(dialog);
 
     toggleOverlay();
   }
@@ -154,15 +154,17 @@ export const Dialog = (() => {
       removeDialog();
 
       Storage.deleteProject(projectName);
-      Storage.updateAllProjects();
 
       for (const span of document.querySelectorAll('.nav-span')) {
         if (span.textContent === projectName) {
           Nav.removeProjectLi(span.closest('li'));
           Nav.updateTaskCount();
           if (span.closest('.project').classList.contains('selected')) {
-            document.querySelector('.container-project').replaceWith(Section.createEmptySection());
+            Section.replaceSection();
             Main.changeDocumentTitle();
+          } else {
+            const currentView = document.querySelector('.project-name').textContent;
+            Section.replaceSection(currentView);
           }
           break;
         }
@@ -175,15 +177,10 @@ export const Dialog = (() => {
       removeDialog();
 
       Storage.deleteTask(projectName, taskTitle);
-      Storage.updateAllProjects();
       Nav.updateTaskCount();
 
-      for (const title of document.querySelectorAll('.task-title')) {
-        if (title.textContent === taskTitle) {
-          Section.removeTaskLi(title.closest('li'));
-          break;
-        }
-      }
+      const currentView = document.querySelector('.project-name').textContent;
+      Section.replaceSection(currentView);
     });
   }
 
@@ -195,9 +192,9 @@ export const Dialog = (() => {
       removeDialog();
 
       Storage.addTask(projectName, ...Object.values(properties), Storage.getIndexCount(projectName));
-      Storage.updateAllProjects();
       Nav.updateTaskCount();
-      Section.addTask(Storage.getTask(projectName,properties.title));
+      const currentView = document.querySelector('.project-name').textContent;
+      Section.replaceSection(currentView);
     })
   }
 
@@ -211,9 +208,9 @@ export const Dialog = (() => {
       const oldTitle = task.getTitle();
 
       Storage.updateTask(projectName, oldTitle, ...Object.values(properties));
-      Storage.updateAllProjects();
       Nav.updateTaskCount();
-      Section.editTask(Storage.getTask(projectName, properties.title), oldTitle);
+      const currentView = document.querySelector('.project-name').textContent;
+      Section.replaceSection(currentView);
     })
   }
 
@@ -231,7 +228,7 @@ export const Dialog = (() => {
     const title = form.querySelector(`.${mode}-task-title`).value;
     const desc = form.querySelector(`.${mode}-task-desc`).value;
     const dateValue = form.querySelector(`#${mode}-task-date`).value;
-    const date = dateValue === '' ? null : dateValue;
+    const date = dateValue ? dateValue : null;
     const priority = form.querySelector(`input[name="${mode}-task-priority"]:checked`).value;
 
     return { title, desc, date, priority };
@@ -242,7 +239,7 @@ export const Dialog = (() => {
   }
 
   const dayMonthYear = date => {
-    return date === null ? '' : format(new Date(date), 'dd/MM/yyyy');
+    return date ? format(new Date(date), 'dd/MM/yyyy') : '';
   }
 
   return {
