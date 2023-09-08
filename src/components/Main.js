@@ -6,48 +6,48 @@ import { Dialog } from './Dialog.js';
 import Storage from '../classes/Storage.js';
 
 export const Main = (() => {
-    const initialize = () => {
-        Storage.updateAllProjects();
+  const initialize = () => {
+    Storage.updateAllProjects();
 
-        const main = document.createElement('main');
-        const sideNav = Nav.createNav();
-        const view = Section.createSection('Today');
+    const main = document.createElement('main');
+    const sideNav = Nav.createNav();
+    const view = Section.createSection('Today');
 
-        const overlay = createText('div', ['overlay'], '');
-        Dialog.addExitHandler(overlay);
+    const overlay = createText('div', ['overlay'], '');
+    Dialog.addExitHandler(overlay);
 
-        main.append(sideNav, view, overlay);
-        document.body.append(Header.createHeader(), main, Footer.createFooter());
-        
-        changeDocumentTitle();
-    }
+    main.append(sideNav, view, overlay);
+    document.body.append(Header.createHeader(), main, Footer.createFooter());
 
-    const createText = (element, className, content) => {
-        const text = document.createElement(element);
-        text.classList.add(...className);
-        text.textContent = content;
+    changeDocumentTitle();
+  }
 
-        return text;
-    }
+  const createText = (element, className, content) => {
+    const text = document.createElement(element);
+    text.classList.add(...className);
+    text.textContent = content;
 
-    const createImg = (src, className, alt) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.classList.add(...className);
-        img.alt = alt;
+    return text;
+  }
 
-        return img;
-    }
+  const createImg = (src, className, alt) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.classList.add(...className);
+    img.alt = alt;
 
-    const changeDocumentTitle = () => {
-        const projectName = document.querySelector('.project-name').textContent;
-        projectName ? document.title = `${projectName} - Todo List` : document.title = 'Todo List';
-    }
+    return img;
+  }
 
-    return {
-        initialize,
-        createText,
-        createImg,
-        changeDocumentTitle
-    }
+  const changeDocumentTitle = () => {
+    const projectName = document.querySelector('.project-name').textContent;
+    projectName ? document.title = `${projectName} - Todo List` : document.title = 'Todo List';
+  }
+
+  return {
+    initialize,
+    createText,
+    createImg,
+    changeDocumentTitle
+  }
 })();

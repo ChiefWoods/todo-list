@@ -21,7 +21,8 @@ export const Dialog = (() => {
     const modalBottom = Main.createText('div', ['modal-delete-bottom'], '');
 
     let spanConfirm = null;
-    taskTitle ? spanConfirm = Main.createText('span', '', 'Are you sure you want to delete this task?')
+    taskTitle
+      ? spanConfirm = Main.createText('span', '', 'Are you sure you want to delete this task?')
       : spanConfirm = Main.createText('span', '', `Are you sure you want to delete project ${projectName}? Warning: this is irreversible!`);
 
     const div = Main.createText('div', ['container-confirm'], '');
@@ -228,7 +229,7 @@ export const Dialog = (() => {
     const title = form.querySelector(`.${mode}-task-title`).value;
     const desc = form.querySelector(`.${mode}-task-desc`).value;
     const dateValue = form.querySelector(`#${mode}-task-date`).value;
-    const date = dateValue ? dateValue : null;
+    const date = dateValue || null;
     const priority = form.querySelector(`input[name="${mode}-task-priority"]:checked`).value;
 
     return { title, desc, date, priority };

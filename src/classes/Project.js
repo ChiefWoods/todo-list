@@ -1,80 +1,80 @@
-import { isToday, toDate, isThisWeek, subDays } from "date-fns";
+import { isToday, isThisWeek, subDays } from 'date-fns';
 
 export default class Project {
-    constructor(name) {
-        this.name = name;
-        this.tasks = [];
-        this.taskCount = 0;
-        this.indexCount = 0;
-    }
+  constructor(name) {
+    this.name = name;
+    this.tasks = [];
+    this.taskCount = 0;
+    this.indexCount = 0;
+  }
 
-    getName() {
-        return this.name;
-    }
+  getName() {
+    return this.name;
+  }
 
-    getTaskCount() {
-        return this.taskCount;
-    }
+  getTaskCount() {
+    return this.taskCount;
+  }
 
-    updateTaskCount() {
-        this.taskCount = this.tasks.length;
-    }
+  updateTaskCount() {
+    this.taskCount = this.tasks.length;
+  }
 
-    getIndexCount() {
-        return this.indexCount;
-    }
+  getIndexCount() {
+    return this.indexCount;
+  }
 
-    updateIndexCount() {
-        this.indexCount = this.tasks.length;
-    }
+  updateIndexCount() {
+    this.indexCount = this.tasks.length;
+  }
 
-    getAllTasks() {
-        return this.tasks;
-    }
+  getAllTasks() {
+    return this.tasks;
+  }
 
-    getTask(taskTitle) {
-        return this.tasks.find(task => task.getTitle() === taskTitle);
-    }
+  getTask(taskTitle) {
+    return this.tasks.find(task => task.getTitle() === taskTitle);
+  }
 
-    setTasks(tasks) {
-        this.tasks = tasks;
-    }
+  setTasks(tasks) {
+    this.tasks = tasks;
+  }
 
-    contains(taskTitle) {
-        return this.tasks.some(task => task.getTitle() === taskTitle);
-    }
+  contains(taskTitle) {
+    return this.tasks.some(task => task.getTitle() === taskTitle);
+  }
 
-    addTask(task) {
-        this.tasks.push(task);
-        this.taskCount++;
-        this.indexCount++;
-    }
+  addTask(task) {
+    this.tasks.push(task);
+    this.taskCount++;
+    this.indexCount++;
+  }
 
-    deleteTask(taskTitle) {
-        this.tasks = this.tasks.filter(task => task.getTitle() !== taskTitle);
-        this.taskCount--;
-    }
+  deleteTask(taskTitle) {
+    this.tasks = this.tasks.filter(task => task.getTitle() !== taskTitle);
+    this.taskCount--;
+  }
 
-    getTodayTasks() {
-        return this.tasks.filter(task => isToday(new Date(this.monthDayYear(task.getDueDate()))));
-    }
+  getTodayTasks() {
+    return this.tasks.filter(task => isToday(new Date(this.monthDayYear(task.getDueDate()))));
+  }
 
-    getThisWeekTasks() {
-        return this.tasks.filter(task => isThisWeek(subDays(new Date(this.monthDayYear(task.getDueDate())), 1)));
-    }
+  getThisWeekTasks() {
+    return this.tasks.filter(task => isThisWeek(subDays(new Date(this.monthDayYear(task.getDueDate())), 1)));
+  }
 
-    getImportantTasks() {
-        return this.tasks.filter(task => task.getPriority() === 'high');
-    }
+  getImportantTasks() {
+    return this.tasks.filter(task => task.getPriority() === 'high');
+  }
 
-    monthDayYear(date) {
-        if (date) {
-            const day = date.split('-')[2];
-            const month = date.split('-')[1];
-            const year = date.split('-')[0];
-            return `${month}/${day}/${year}`;
-        } else {
-            return null;
-        }
+  monthDayYear(date) {
+    if (date) {
+      const day = date.split('-')[2];
+      const month = date.split('-')[1];
+      const year = date.split('-')[0];
+      return `${month}/${day}/${year}`;
+    } else {
+      return null;
     }
+  }
 }
