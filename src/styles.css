@@ -321,6 +321,11 @@ nav {
   padding: 0px 15px;
 }
 
+.expired {
+  font-weight: 600;
+  color: red;
+}
+
 .task-edit-button,
 .task-trash-button {
   padding: 0px 8px;
