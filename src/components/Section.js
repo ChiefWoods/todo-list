@@ -163,7 +163,7 @@ export const Section = (() => {
   }
 
   const isTaskExpired = date => {
-    return isPast(new Date(date)) ? ['task-date', 'expired'] : ['task-date'];
+    return isPast(new Date(date)) && date ? ['task-date', 'expired'] : ['task-date'];
   }
 
   return {
