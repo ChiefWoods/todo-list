@@ -7,6 +7,7 @@ import Storage from '../classes/Storage.js';
 
 export const Main = (() => {
   const initialize = () => {
+    addCSSTemplate();
     Storage.updateAllProjects();
 
     const main = document.createElement('main');
@@ -37,6 +38,14 @@ export const Main = (() => {
     img.alt = alt;
 
     return img;
+  }
+
+  const addCSSTemplate = () => {
+    const link = document.createElement('link');
+    link.href = 'https://chiefwoods.github.io/footer-template/template.css';
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    document.head.appendChild(link);
   }
 
   const changeDocumentTitle = () => {

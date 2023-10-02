@@ -8,15 +8,7 @@
   src: url(fonts/Heebo/Heebo-VariableFont_wght.ttf) format('truetype');
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 62.5%;
-  --github-black: #0D1117;
+:root {
   --tailwind-sky-50: #f0f9ff;
   --tailwind-sky-200: #bae6fd;
   --tailwind-sky-400: #38bdf8;
@@ -25,13 +17,6 @@ html {
   --priority-low-green: #4ade80;
   --priority-medium-yellow: #fde047;
   --priority-high-red: #ef4444;
-}
-
-body {
-  display: inline-flex;
-  flex-direction: column;
-  min-height: 100vh;
-  min-width: calc(100vw - (100vw - 100%));
 }
 
 /* Header */
@@ -676,37 +661,7 @@ input[value="high"]:checked + label {
   color: var(--priority-high-red);
 }
 
-/* Footer */
-
-footer {
-  display: flex;
-  align-items: center;
-  background-color: var(--github-black);
-  padding: 12px 40px;
-}
-
-.made-by {
-  font-size: 12px;
-  font-family: cursive;
-  color: white;
-  margin: 0 auto;
-}
-
-.github-icon {
-  height: 25px;
-}
-
-@media (max-width: 992px) {
-  html {
-    font-size: 67.5%;
-  }
-}
-
 @media (max-width: 576px) {
-  html {
-    font-size: 72.5%;
-  }
-
   main {
     flex-direction: column;
   }
