@@ -66,7 +66,7 @@ export const Nav = (() => {
     !deleteIcon ? button.append(img, name, taskCount) : button.append(img, name, taskCount, deleteIcon);
     li.append(button);
 
-    addProjectHandler(li);
+    addSelectProjectHandler(li);
 
     return li;
   }
@@ -99,36 +99,29 @@ export const Nav = (() => {
     input.type = 'text';
 
     const div = document.createElement('div');
+
     const addButton = Main.createText('button', ['project-add'], 'Add');
 
     addButton.addEventListener('click', () => {
-      const projectName = input.value;
+      createNewProject(input.value);
+    })
 
-      if (projectName === '') {
-        alert('Project name cannot be empty');
-      } else if (Storage.containsProject(projectName)) {
-        alert('Project name already exists');
-      } else {
-        Storage.addProject(projectName);
-
-        const li = createProjectLi(
-          ['nav-button', 'project'],
-          Main.createImg(list, ['nav-icon'], 'List'),
-          Main.createText('span', ['nav-span'], projectName),
-          Main.createText('span', ['task-count'], ''),
-          createDeleteIcon()
-        )
-
-        container.remove();
-        document.querySelector('.nav-projects').append(li, createAddProjectLi());
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        createNewProject(input.value);
       }
     })
 
     const cancelButton = Main.createText('button', ['project-cancel'], 'Cancel');
 
     cancelButton.addEventListener('click', () => {
-      container.remove();
-      document.querySelector('.nav-projects').append(createAddProjectLi());
+      cancelNewProject();
+    })
+
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        cancelNewProject();
+      }
     })
 
     div.append(addButton, cancelButton);
@@ -141,7 +134,7 @@ export const Nav = (() => {
     li.remove();
   }
 
-  const addProjectHandler = li => {
+  const addSelectProjectHandler = li => {
     li.addEventListener('click', e => {
       const selectedButton = document.querySelector('.selected');
 
@@ -163,6 +156,7 @@ export const Nav = (() => {
       e.target.parentNode.remove();
 
       document.querySelector('.nav-bottom').append(createInputProject());
+      document.querySelector('.input-project').focus();
     })
   }
 
@@ -175,6 +169,32 @@ export const Nav = (() => {
 
       Dialog.showDeleteModal(projectName);
     })
+  }
+
+  const createNewProject = projectName => {
+    if (projectName === '') {
+      alert('Project name cannot be empty');
+    } else if (Storage.containsProject(projectName)) {
+      alert('Project name already exists');
+    } else {
+      Storage.addProject(projectName);
+
+      const li = createProjectLi(
+        ['nav-button', 'project'],
+        Main.createImg(list, ['nav-icon'], 'List'),
+        Main.createText('span', ['nav-span'], projectName),
+        Main.createText('span', ['task-count'], ''),
+        createDeleteIcon()
+      )
+
+      document.querySelector('.container-add-project').remove();
+      document.querySelector('.nav-projects').append(li, createAddProjectLi());
+    }
+  }
+
+  const cancelNewProject = () => {
+    document.querySelector('.container-add-project').remove();
+    document.querySelector('.nav-projects').append(createAddProjectLi());
   }
 
   const getTaskCountString = projectName => {
