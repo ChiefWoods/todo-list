@@ -1,4 +1,4 @@
 import './styles.css';
-import { Main } from './components/Main.js';
+import { Utility } from './components/Utility.js';
 
-Main.initialize();
+Utility.initialize();

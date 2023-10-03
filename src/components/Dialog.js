@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Main } from './Main.js';
+import { Utility } from './Utility.js';
 import { Nav } from './Nav.js';
 import { Section } from './Section.js';
 import Storage from '../classes/Storage.js';
@@ -7,27 +7,27 @@ import exit from '../icons/close-white.svg';
 
 export const Dialog = (() => {
   const showDeleteModal = (projectName, taskTitle = null) => {
-    const dialog = Main.createText('dialog', ['modal-delete'], '');
+    const dialog = Utility.createText('dialog', ['modal-delete']);
     dialog.open = true;
 
-    const modalTop = Main.createText('div', ['modal-delete-top'], '');
-    const span = Main.createText('span', '', 'Confirm Delete');
+    const modalTop = Utility.createText('div', ['modal-delete-top']);
+    const span = Utility.createText('span', '', 'Confirm Delete');
     const button = document.createElement('button');
     const exitIcon = createExitIcon('delete');
 
     button.append(exitIcon);
     modalTop.append(span, button);
 
-    const modalBottom = Main.createText('div', ['modal-delete-bottom'], '');
+    const modalBottom = Utility.createText('div', ['modal-delete-bottom']);
 
     let spanConfirm = null;
     taskTitle
-      ? spanConfirm = Main.createText('span', '', 'Are you sure you want to delete this task?')
-      : spanConfirm = Main.createText('span', '', `Are you sure you want to delete project ${projectName}? Warning: this is irreversible!`);
+      ? spanConfirm = Utility.createText('span', [], 'Are you sure you want to delete this task?')
+      : spanConfirm = Utility.createText('span', [], `Are you sure you want to delete project ${projectName}? Warning: this is irreversible!`);
 
-    const div = Main.createText('div', ['container-confirm'], '');
+    const div = Utility.createText('div', ['container-confirm']);
 
-    const deleteButton = Main.createText('button', ['delete-confirm-button'], 'Delete');
+    const deleteButton = Utility.createText('button', ['delete-confirm-button'], 'Delete');
     taskTitle ? addDeleteTaskHandler(deleteButton, projectName, taskTitle) : addDeleteProjectHandler(deleteButton, projectName);
 
     div.append(deleteButton);
@@ -39,23 +39,23 @@ export const Dialog = (() => {
   }
 
   const showViewModal = (projectName, task) => {
-    const dialog = Main.createText('dialog', ['modal-view'], '');
+    const dialog = Utility.createText('dialog', ['modal-view']);
     dialog.open = true;
 
-    const modalTop = Main.createText('div', ['modal-view-top'], '');
-    const span = Main.createText('h1', ['view-title'], task.getTitle());
+    const modalTop = Utility.createText('div', ['modal-view-top']);
+    const span = Utility.createText('h1', ['view-title'], task.getTitle());
     const button = document.createElement('button');
     const exitIcon = createExitIcon('view');
 
     button.append(exitIcon);
     modalTop.append(span, button);
 
-    const modalBottom = Main.createText('div', ['modal-view-bottom'], '');
-    const desc = Main.createText('p', ['view-desc'], task.getDescription());
-    const project = Main.createText('p', ['view-project'], `Project: ${projectName}`);
-    const date = Main.createText('p', ['view-date'], `Due Date: ${task.getDueDate() ? dayMonthYear(task.getDueDate()) : '-'}`);
-    const priority = Main.createText('p', ['view-priority'], 'Priority: ');
-    const priorityLevel = Main.createText('span', ['view-priority-level', `view-${task.getPriority()}`], capitalize(task.getPriority()));
+    const modalBottom = Utility.createText('div', ['modal-view-bottom']);
+    const desc = Utility.createText('p', ['view-desc'], task.getDescription());
+    const project = Utility.createText('p', ['view-project'], `Project: ${projectName}`);
+    const date = Utility.createText('p', ['view-date'], `Due Date: ${task.getDueDate() ? dayMonthYear(task.getDueDate()) : '-'}`);
+    const priority = Utility.createText('p', ['view-priority'], 'Priority: ');
+    const priorityLevel = Utility.createText('span', ['view-priority-level', `view-${task.getPriority()}`], capitalize(task.getPriority()));
 
     priority.append(priorityLevel);
     modalBottom.append(desc, project, date, priority);
@@ -66,34 +66,34 @@ export const Dialog = (() => {
   }
 
   const showCreateEditModal = (projectName, task, mode) => {
-    const dialog = Main.createText('dialog', [`modal-${mode}`], '');
+    const dialog = Utility.createText('dialog', [`modal-${mode}`]);
     dialog.open = true;
 
-    const modalTop = Main.createText('div', [`modal-${mode}-top`], '');
-    const span = Main.createText('span', '', `${capitalize(mode)} Task`);
+    const modalTop = Utility.createText('div', [`modal-${mode}-top`]);
+    const span = Utility.createText('span', '', `${capitalize(mode)} Task`);
     const button = document.createElement('button');
     const exitIcon = createExitIcon(mode);
 
     button.append(exitIcon);
     modalTop.append(span, button);
 
-    const form = Main.createText('form', [`modal-${mode}-bottom`], '');
+    const form = Utility.createText('form', [`modal-${mode}-bottom`]);
     form.method = 'dialog';
 
-    const inputText = Main.createText('input', [`${mode}-task-title`], '');
+    const inputText = Utility.createText('input', [`${mode}-task-title`]);
     inputText.type = 'text';
     inputText.placeholder = 'Title';
     inputText.required = true;
     if (task) inputText.value = task.getTitle();
 
-    const textarea = Main.createText('textarea', [`${mode}-task-desc`], '');
+    const textarea = Utility.createText('textarea', [`${mode}-task-desc`]);
     textarea.placeholder = 'Description';
     textarea.required = true;
     if (task) textarea.textContent = task.getDescription();
 
-    const divDate = Main.createText('div', ['container-date'], '');
+    const divDate = Utility.createText('div', ['container-date']);
 
-    const label = Main.createText('label', '', 'Due Date :');
+    const label = Utility.createText('label', [], 'Due Date :');
     label.htmlFor = `${mode}-task-date`;
 
     const inputDate = document.createElement('input');
@@ -103,12 +103,12 @@ export const Dialog = (() => {
 
     divDate.append(label, inputDate);
 
-    const divPriority = Main.createText('div', ['container-priority'], '');
-    const spanPriority = Main.createText('span', '', 'Priority :');
+    const divPriority = Utility.createText('div', ['container-priority']);
+    const spanPriority = Utility.createText('span', [], 'Priority :');
 
     divPriority.append(spanPriority);
 
-    const divPriorityLvl = Main.createText('div', ['container-priority-level'], '');
+    const divPriorityLvl = Utility.createText('div', ['container-priority-level']);
 
     ['low', 'medium', 'high'].forEach(level => {
       const input = document.createElement('input');
@@ -118,7 +118,7 @@ export const Dialog = (() => {
       input.value = level;
       if ((task && task.getPriority() === level) || (!task && level === 'low')) input.checked = true;
 
-      const label = Main.createText('label', [`label-${level}`], capitalize(level));
+      const label = Utility.createText('label', [`label-${level}`], capitalize(level));
       label.htmlFor = `${mode}-${level}`;
 
       divPriorityLvl.append(input, label);
@@ -126,7 +126,7 @@ export const Dialog = (() => {
 
     divPriorityLvl.querySelector('input[value="low"]').required = true;
 
-    const addEditButton = Main.createText('button', !task ? ['create-add-button'] : ['edit-change-button'], !task ? 'Add' : 'Edit');
+    const addEditButton = Utility.createText('button', !task ? ['create-add-button'] : ['edit-change-button'], !task ? 'Add' : 'Edit');
     addEditButton.type = 'submit';
 
     !task ? addCreateHandler(form, projectName) : addEditHandler(form, projectName, task);
@@ -140,7 +140,7 @@ export const Dialog = (() => {
   }
 
   const createExitIcon = mode => {
-    const exitIcon = Main.createImg(exit, [`${mode}-exit`, 'exit-button'], 'Exit');
+    const exitIcon = Utility.createImg(exit, [`${mode}-exit`, 'exit-button'], 'Exit');
     addExitHandler(exitIcon);
 
     return exitIcon;
@@ -162,7 +162,7 @@ export const Dialog = (() => {
           Nav.updateTaskCount();
           if (span.closest('.project').classList.contains('selected')) {
             Section.replaceSection();
-            Main.changeDocumentTitle();
+            Utility.changeDocumentTitle();
           } else {
             const currentView = document.querySelector('.project-name').textContent;
             Section.replaceSection(currentView);

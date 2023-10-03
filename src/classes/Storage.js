@@ -3,10 +3,6 @@ import Project from './Project.js';
 import TodoList from './TodoList.js';
 
 export default class Storage {
-  static setTodoList(todoList) {
-    localStorage.setItem('todoList', JSON.stringify(todoList));
-  }
-
   static getTodoList() {
     const todoList = Object.assign(new TodoList(), JSON.parse(localStorage.getItem('todoList')))
 
@@ -21,6 +17,10 @@ export default class Storage {
     )
 
     return todoList;
+  }
+
+  static setTodoList(todoList) {
+    localStorage.setItem('todoList', JSON.stringify(todoList));
   }
 
   static updateAllProjects() {

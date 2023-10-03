@@ -5,25 +5,32 @@ import { Section } from './Section.js';
 import { Dialog } from './Dialog.js';
 import Storage from '../classes/Storage.js';
 
-export const Main = (() => {
+export const Utility = (() => {
   const initialize = () => {
     addCSSTemplate();
     Storage.updateAllProjects();
 
     const main = document.createElement('main');
-    const sideNav = Nav.createNav();
-    const view = Section.createSection('Today');
 
-    const overlay = createText('div', ['overlay'], '');
+    const overlay = createText('div', ['overlay']);
     Dialog.addExitHandler(overlay);
 
-    main.append(sideNav, view, overlay);
-    document.body.append(Header.createHeader(), main, Footer.createFooter());
+    main.append(
+      Nav.createNav(),
+      Section.createSection('Today'),
+      overlay
+    )
+
+    document.body.append(
+      Header.createHeader(),
+      main,
+      Footer.createFooter()
+    );
 
     changeDocumentTitle();
   }
 
-  const createText = (element, className, content) => {
+  const createText = (element, className, content = '') => {
     const text = document.createElement(element);
     text.classList.add(...className);
     text.textContent = content;

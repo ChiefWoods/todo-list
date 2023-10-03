@@ -1,5 +1,5 @@
 import { format, isPast } from 'date-fns';
-import { Main } from './Main.js';
+import { Utility } from './Utility.js';
 import { Dialog } from './Dialog.js';
 import Storage from '../classes/Storage.js';
 import edit from '../icons/square-edit-outline.svg';
@@ -8,9 +8,9 @@ import add from '../icons/plus.svg';
 
 export const Section = (() => {
   const createSection = projectName => {
-    const section = Main.createText('section', ['container-project'], '');
-    const h1 = Main.createText('h1', ['project-name'], projectName);
-    const menu = Main.createText('menu', ['task-list'], '');
+    const section = Utility.createText('section', ['container-project']);
+    const h1 = Utility.createText('h1', ['project-name'], projectName);
+    const menu = Utility.createText('menu', ['task-list']);
 
     section.append(h1, menu);
 
@@ -29,8 +29,8 @@ export const Section = (() => {
   }
 
   const createEmptySection = () => {
-    const section = Main.createText('section', ['container-project'], '');
-    const h1 = Main.createText('h1', ['project-name'], 'Select a project');
+    const section = Utility.createText('section', ['container-project']);
+    const h1 = Utility.createText('h1', ['project-name'], 'Select a project');
 
     section.append(h1);
 
@@ -38,34 +38,34 @@ export const Section = (() => {
   }
 
   const createEmptyTask = () => {
-    return Main.createText('h2', ['empty-task'], 'It\'s quite empty here...')
+    return Utility.createText('h2', ['empty-task'], "It's quite empty here...")
   }
 
   const createTaskLi = task => {
     const li = document.createElement('li');
-    const button = Main.createText('button', ['task', `task-${task.getPriority()}`], '');
+    const button = Utility.createText('button', ['task', `task-${task.getPriority()}`]);
     addViewHandler(button);
 
     const label = document.createElement('label');
     label.htmlFor = `checkbox${task.getIndex()}`;
 
-    const input = Main.createText('input', ['task-checkbox'], '');
+    const input = Utility.createText('input', ['task-checkbox']);
     input.type = 'checkbox';
     input.id = `checkbox${task.getIndex()}`;
     input.checked = task.getCompleted();
     addCheckHandler(input);
 
-    const div = Main.createText('div', ['checkbox-div'], '');
+    const div = Utility.createText('div', ['checkbox-div']);
 
     label.append(input, div);
 
-    const h2 = Main.createText('h2', isTaskCompleted(task.getCompleted()), task.getTitle());
-    const span = Main.createText('span', isTaskExpired(task.getDueDate()), dayMonthYear(task.getDueDate()));
+    const h2 = Utility.createText('h2', isTaskCompleted(task.getCompleted()), task.getTitle());
+    const span = Utility.createText('span', isTaskExpired(task.getDueDate()), dayMonthYear(task.getDueDate()));
 
-    const editIcon = Main.createImg(edit, ['task-icon', 'task-edit-button'], 'Edit');
+    const editIcon = Utility.createImg(edit, ['task-icon', 'task-edit-button'], 'Edit');
     addEditHandler(editIcon);
 
-    const trashIcon = Main.createImg(trash, ['task-icon', 'task-trash-button'], 'Trash');
+    const trashIcon = Utility.createImg(trash, ['task-icon', 'task-trash-button'], 'Trash');
     addTrashHandler(trashIcon);
 
     button.append(label, h2, span, editIcon, trashIcon);
@@ -76,9 +76,9 @@ export const Section = (() => {
 
   const createAddTaskLi = () => {
     const li = document.createElement('li');
-    const button = Main.createText('button', ['task', 'add-task'], '');
-    const img = Main.createImg(add, '', 'Add');
-    const span = Main.createText('span', '', 'Add Task');
+    const button = Utility.createText('button', ['task', 'add-task']);
+    const img = Utility.createImg(add, '', 'Add');
+    const span = Utility.createText('span', [], 'Add Task');
 
     button.append(img, span);
     li.append(button);

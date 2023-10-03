@@ -1,4 +1,4 @@
-import { Main } from './Main.js';
+import { Utility } from './Utility.js';
 import { Section } from './Section.js';
 import { Dialog } from './Dialog.js';
 import Storage from '../classes/Storage.js';
@@ -12,42 +12,42 @@ import add from '../icons/plus.svg';
 export const Nav = (() => {
   const createNav = () => {
     const nav = document.createElement('nav');
-    const navTop = Main.createText('menu', ['nav-top'], '');
+    const navTop = Utility.createText('menu', ['nav-top']);
 
     const navTopLi = [
       createProjectLi(
         ['nav-button', 'project', 'selected'],
-        Main.createImg(today, ['nav-icon'], 'Today'),
-        Main.createText('span', ['nav-span'], 'Today'),
-        Main.createText('span', ['task-count'], getTaskCountString('Today'))
+        Utility.createImg(today, ['nav-icon'], 'Today'),
+        Utility.createText('span', ['nav-span'], 'Today'),
+        Utility.createText('span', ['task-count'], getTaskCountString('Today'))
       ),
       createProjectLi(
         ['nav-button', 'project'],
-        Main.createImg(week, ['nav-icon'], 'This week'),
-        Main.createText('span', ['nav-span'], 'This week'),
-        Main.createText('span', ['task-count'], getTaskCountString('This week'))
+        Utility.createImg(week, ['nav-icon'], 'This week'),
+        Utility.createText('span', ['nav-span'], 'This week'),
+        Utility.createText('span', ['task-count'], getTaskCountString('This week'))
       ),
       createProjectLi(
         ['nav-button', 'project'],
-        Main.createImg(important, ['nav-icon'], 'Important'),
-        Main.createText('span', ['nav-span'], 'Important'),
-        Main.createText('span', ['task-count'], getTaskCountString('Important'))
+        Utility.createImg(important, ['nav-icon'], 'Important'),
+        Utility.createText('span', ['nav-span'], 'Important'),
+        Utility.createText('span', ['task-count'], getTaskCountString('Important'))
       )
     ]
 
     navTop.append(...navTopLi);
 
-    const div = Main.createText('div', ['nav-bottom'], '');
-    const h1 = Main.createText('h1', '', 'Projects');
-    const navProjects = Main.createText('menu', ['nav-projects'], '');
+    const div = Utility.createText('div', ['nav-bottom']);
+    const h1 = Utility.createText('h1', '', 'Projects');
+    const navProjects = Utility.createText('menu', ['nav-projects']);
     const allProjects = Storage.getAllProjects().filter(project => !['Today', 'This week', 'Important'].includes(project.getName()));
 
     const navProjectsLi = allProjects.map(project =>
       createProjectLi(
         ['nav-button', 'project'],
-        Main.createImg(list, ['nav-icon'], 'List'),
-        Main.createText('span', ['nav-span'], project.getName()),
-        Main.createText('span', ['task-count'], getTaskCountString(project.getName())),
+        Utility.createImg(list, ['nav-icon'], 'List'),
+        Utility.createText('span', ['nav-span'], project.getName()),
+        Utility.createText('span', ['task-count'], getTaskCountString(project.getName())),
         createDeleteIcon()
       )
     )
@@ -61,7 +61,7 @@ export const Nav = (() => {
 
   const createProjectLi = (className, img, name, taskCount = null, deleteIcon = null) => {
     const li = document.createElement('li');
-    const button = Main.createText('button', className, '');
+    const button = Utility.createText('button', className);
 
     !deleteIcon ? button.append(img, name, taskCount) : button.append(img, name, taskCount, deleteIcon);
     li.append(button);
@@ -73,9 +73,9 @@ export const Nav = (() => {
 
   const createAddProjectLi = () => {
     const li = document.createElement('li');
-    const button = Main.createText('button', ['nav-button', 'add-project'], '');
-    const img = Main.createImg(add, ['nav-icon'], 'Add');
-    const span = Main.createText('span', ['nav-span'], 'Add Project');
+    const button = Utility.createText('button', ['nav-button', 'add-project']);
+    const img = Utility.createImg(add, ['nav-icon'], 'Add');
+    const span = Utility.createText('span', ['nav-span'], 'Add Project');
 
     button.append(img, span);
     li.append(button);
@@ -86,21 +86,21 @@ export const Nav = (() => {
   }
 
   const createDeleteIcon = () => {
-    const img = Main.createImg(close, ['nav-icon', 'project-delete'], 'Delete');
+    const img = Utility.createImg(close, ['nav-icon', 'project-delete'], 'Delete');
     addDeleteHandler(img);
 
     return img;
   }
 
   const createInputProject = () => {
-    const container = Main.createText('div', ['container-add-project'], '');
+    const container = Utility.createText('div', ['container-add-project']);
 
-    const input = Main.createText('input', ['input-project'], '');
+    const input = Utility.createText('input', ['input-project']);
     input.type = 'text';
 
     const div = document.createElement('div');
 
-    const addButton = Main.createText('button', ['project-add'], 'Add');
+    const addButton = Utility.createText('button', ['project-add'], 'Add');
 
     addButton.addEventListener('click', () => {
       createNewProject(input.value);
@@ -112,7 +112,7 @@ export const Nav = (() => {
       }
     })
 
-    const cancelButton = Main.createText('button', ['project-cancel'], 'Cancel');
+    const cancelButton = Utility.createText('button', ['project-cancel'], 'Cancel');
 
     cancelButton.addEventListener('click', () => {
       cancelNewProject();
@@ -147,7 +147,7 @@ export const Nav = (() => {
 
       document.querySelector('.container-project').replaceWith(Section.createSection(projectName));
 
-      Main.changeDocumentTitle();
+      Utility.changeDocumentTitle();
     })
   }
 
@@ -181,9 +181,9 @@ export const Nav = (() => {
 
       const li = createProjectLi(
         ['nav-button', 'project'],
-        Main.createImg(list, ['nav-icon'], 'List'),
-        Main.createText('span', ['nav-span'], projectName),
-        Main.createText('span', ['task-count'], ''),
+        Utility.createImg(list, ['nav-icon'], 'List'),
+        Utility.createText('span', ['nav-span'], projectName),
+        Utility.createText('span', ['task-count']),
         createDeleteIcon()
       )
 
