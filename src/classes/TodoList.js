@@ -1,121 +1,141 @@
-import { compareAsc } from 'date-fns';
-import Project from './Project.js';
-import Task from './Task.js';
+import { compareAsc } from "date-fns";
+import Project from "./Project.js";
+import Task from "./Task.js";
 
 export default class TodoList {
-  constructor() {
-    this.projects = [
-      new Project('Today'),
-      new Project('This week'),
-      new Project('Important')
-    ];
+  weightage = {
+    high: 1,
+    medium: 2,
+    low: 3,
+  };
+
+  projects;
+
+  constructor(defaults = null) {
+    this.projects = defaults ? defaults.map((name) => new Project(name)) : [];
   }
 
   getAllProjects() {
     return this.projects;
   }
 
-  getProject(projectName) {
-    return this.projects.find(project => project.getName() === projectName);
+  getProject(name) {
+    return this.projects.find((project) => project.getName() === name);
   }
 
   setProjects(projects) {
     this.projects = projects;
   }
 
-  contains(projectName) {
-    return this.projects.some(project => project.getName() === projectName);
+  addProject(name) {
+    this.projects.push(new Project(name));
   }
 
-  addProject(project) {
-    this.projects.push(project);
+  deleteProject(defaults, name) {
+    this.projects = this.projects.filter(
+      (project) => project.getName() !== name,
+    );
+
+    this.updateDefaultProjects(defaults);
   }
 
-  deleteProject(projectName) {
-    this.projects = this.projects.filter(project => project.getName() !== projectName);
+  getAllTasks(name) {
+    return this.getProject(name).getAllTasks();
   }
 
-  updateTodayProjects() {
-    this.updateProject('Today').tasks =
-      this.sortByPriority(
-        this.getProject('Today').getAllTasks()
-      )
-    this.reindexTasks(this.getProject('Today').getAllTasks());
-    this.getProject('Today').updateTaskCount();
-    this.getProject('Today').updateIndexCount();
+  addTask(defaults, name, title, desc, date, priority) {
+    const project = this.getProject(name);
+    project.addTask(
+      new Task(title, desc, date, priority, false, project.getIndex()),
+    );
+    this.updateDefaultProjects(defaults);
   }
 
-  updateThisWeekProjects() {
-    this.updateProject('This week').tasks =
-      this.sortByDate(
-        this.getProject('This week').getAllTasks()
-      )
-    this.reindexTasks(this.getProject('This week').getAllTasks());
-    this.getProject('This week').updateTaskCount();
-    this.getProject('This week').updateIndexCount();
+  deleteTask(defaults, name, title) {
+    this.getProject(name).deleteTask(title);
+    this.updateDefaultProjects(defaults);
   }
 
-  updateImportantProjects() {
-    this.updateProject('Important').tasks =
-      this.sortByDate(
-        this.getProject('Important').getAllTasks()
-      )
-    this.reindexTasks(this.getProject('This week').getAllTasks());
-    this.getProject('This week').updateTaskCount();
-    this.getProject('This week').updateIndexCount();
+  updateTask(defaults, name, oldTitle, newTitle, desc, dueDate, priority) {
+    this.getProject(name)
+      .getTask(oldTitle)
+      .updateTask(newTitle, desc, dueDate, priority);
+    this.updateDefaultProjects(defaults);
   }
 
-  updateProject(projectName) {
-    this.getProject(projectName).tasks = [];
-    this.getProject(projectName).taskCount = 0;
-    this.getProject(projectName).indexCount = 0;
-
-    this.projects.forEach(project => {
-      if (!['Today', 'This week', 'Important'].includes(project.getName())) {
-        const tasks = projectName === 'Today'
-          ? project.getTodayTasks()
-          : projectName === 'This week'
-            ? project.getThisWeekTasks()
-            : project.getImportantTasks()
-
-        tasks.forEach((task, index) => {
-          this.getProject(projectName).addTask(
-            new Task(task.getTitle(), task.getDescription(), task.getDueDate(), task.getPriority(), task.getCompleted(), index)
-          )
-        })
-      }
-    })
-
-    return this.getProject(projectName);
+  toggleTaskCompleted(defaults, name, title) {
+    this.getProject(name).getTask(title).toggleCompleted();
+    this.updateDefaultProjects(defaults);
   }
 
-  updateAllProjects() {
-    this.updateTodayProjects();
-    this.updateThisWeekProjects();
-    this.updateImportantProjects();
+  getIndex(name) {
+    return this.getProject(name).getIndex();
+  }
+
+  updateDefaultProjects(defaults) {
+    defaults.forEach((name) => {
+      const defaultProject = this.getProject(name);
+
+      defaultProject.setTasks([]);
+      defaultProject.updateIndex();
+
+      this.projects.forEach((project) => {
+        if (!defaults.includes(project.getName())) {
+          const tasks =
+            name === "Today"
+              ? project.getTodayTasks()
+              : name === "This week"
+                ? project.getThisWeekTasks()
+                : project.getImportantTasks();
+
+          tasks.forEach((task, index) => {
+            defaultProject.addTask(
+              new Task(
+                task.getTitle(),
+                task.getDescription(),
+                task.getDueDate(),
+                task.getPriority(),
+                task.getCompleted(),
+                index,
+              ),
+            );
+          });
+
+          name === "Today"
+            ? this.sortByPriority(defaultProject.getAllTasks())
+            : defaultProject.setTasks(
+                this.sortByDate(defaultProject.getAllTasks()),
+              );
+        }
+      });
+    });
   }
 
   reindexTasks(tasks) {
-    tasks.forEach((task, index) => task.setIndex(index))
+    tasks.forEach((task, index) => task.setIndex(index));
   }
 
   sortByPriority(tasks) {
-    return tasks.sort((a, b) => this.priorityToScore(a) - this.priorityToScore(b))
-  }
-
-  priorityToScore(task) {
-    return task.getPriority() === 'high' ? -3 : task.getPriority() === 'medium' ? -2 : -1;
+    tasks.sort(
+      (a, b) => this.weightage[a.priority] - this.weightage[b.priority],
+    );
   }
 
   sortByDate(tasks) {
-    const nullDates = []
-    const nonNullDates = []
-    tasks.forEach(task => task.getDueDate() === null ? nullDates.push(task) : nonNullDates.push(task))
+    const tasksNoDates = [];
+    const tasksWithDates = [];
 
-    const sortedDates = nonNullDates.sort((a, b) => compareAsc(
-      new Date(a.getDueDate()), new Date(b.getDueDate()))
-    )
+    tasks.forEach((task) => {
+      !task.dueDate ? tasksNoDates.push(task) : tasksWithDates.push(task);
+    });
 
-    return [...sortedDates, ...nullDates]
+    this.sortByPriority(tasksNoDates);
+    this.sortByPriority(tasksWithDates);
+
+    tasksWithDates.sort((a, b) =>
+      compareAsc(new Date(a.dueDate), new Date(b.dueDate)),
+    );
+
+    return [...tasksWithDates, ...tasksNoDates];
   }
 }

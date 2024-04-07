@@ -1,124 +1,108 @@
-import Task from './Task.js';
-import Project from './Project.js';
-import TodoList from './TodoList.js';
+import TodoList from "./TodoList.js";
+import { serialize, deserialize } from "./serializer.js";
 
 export default class Storage {
+  static defaults = ["Today", "This week", "Important"];
+  static todoList;
+
   static getTodoList() {
-    const todoList = Object.assign(new TodoList(), JSON.parse(localStorage.getItem('todoList')))
+    this.todoList =
+      deserialize(localStorage.getItem("todoList")) ??
+      new TodoList(this.defaults);
 
-    todoList.setProjects(todoList.getAllProjects()
-      .map(project => Object.assign(new Project(), project))
-    )
-
-    todoList.getAllProjects().forEach(project =>
-      project.setTasks(project.getAllTasks()
-        .map(task => Object.assign(new Task(), task))
-      )
-    )
-
-    return todoList;
+    return this.todoList;
   }
 
   static setTodoList(todoList) {
-    localStorage.setItem('todoList', JSON.stringify(todoList));
+    localStorage.setItem("todoList", serialize(todoList));
   }
 
-  static updateAllProjects() {
-    const todoList = Storage.getTodoList();
-    todoList.updateAllProjects();
-    Storage.setTodoList(todoList);
+  static updateDefaultProjects() {
+    this.getTodoList().updateDefaultProjects(this.defaults);
+    this.setTodoList(this.todoList);
+  }
+
+  static containsProject(name) {
+    return Boolean(this.getTodoList().getProject(name));
   }
 
   static getAllProjects() {
-    const todoList = Storage.getTodoList();
-    return todoList.getAllProjects();
+    return this.getTodoList().getAllProjects();
   }
 
-  static containsProject(projectName) {
-    const todoList = Storage.getTodoList();
-    return todoList.contains(projectName);
+  static addProject(name) {
+    this.getTodoList().addProject(name);
+    this.setTodoList(this.todoList);
   }
 
-  static addProject(projectName) {
-    const todoList = Storage.getTodoList();
-    todoList.addProject(new Project(projectName));
-    Storage.setTodoList(todoList);
+  static deleteProject(name) {
+    this.getTodoList().deleteProject(this.defaults, name);
+    this.setTodoList(this.todoList);
   }
 
-  static deleteProject(projectName) {
-    const todoList = Storage.getTodoList();
-    todoList.deleteProject(projectName);
-    todoList.updateAllProjects();
-    Storage.setTodoList(todoList);
+  static getIndex(name) {
+    return this.getTodoList().getIndex(name);
   }
 
-  static getTaskCount(projectName) {
-    const todoList = Storage.getTodoList();
-    return todoList.getProject(projectName).getTaskCount();
+  static getAllTasks(name) {
+    return this.getTodoList().getAllTasks(name);
   }
 
-  static getIndexCount(projectName) {
-    const todoList = Storage.getTodoList();
-    return todoList.getProject(projectName).getIndexCount();
+  static getTask(name, title) {
+    return this.getTodoList().getProject(name).getTask(title);
   }
 
-  static getAllTasks(projectName) {
-    const todoList = Storage.getTodoList();
-    return todoList.getProject(projectName).getAllTasks();
+  static addTask(name, title, desc, date, priority) {
+    this.getTodoList().addTask(
+      this.defaults,
+      name,
+      title,
+      desc,
+      date,
+      priority,
+    );
+
+    this.setTodoList(this.todoList);
   }
 
-  static getTask(projectName, taskTitle) {
-    const todoList = Storage.getTodoList();
-    return todoList.getProject(projectName).getTask(taskTitle);
+  static deleteTask(name, title) {
+    this.getTodoList().deleteTask(this.defaults, name, title);
+    this.setTodoList(this.todoList);
   }
 
-  static isProjectEmpty(projectName) {
-    const todoList = Storage.getTodoList();
-    return todoList.getProject(projectName).getTaskCount() === 0;
+  static updateTask(name, oldTitle, newTitle, desc, dueDate, priority) {
+    this.getTodoList().updateTask(
+      this.defaults,
+      name,
+      oldTitle,
+      newTitle,
+      desc,
+      dueDate,
+      priority,
+    );
+
+    this.setTodoList(this.todoList);
   }
 
-  static containsTask(projectName, taskTitle) {
-    const todoList = Storage.getTodoList();
-    return todoList.getProject(projectName).contains(taskTitle);
+  static toggleTaskCompleted(name, title) {
+    this.getTodoList().toggleTaskCompleted(this.defaults, name, title);
+    this.setTodoList(this.todoList);
   }
 
-  static addTask(projectName, title, desc, date, priority) {
-    const todoList = Storage.getTodoList();
-    todoList.getProject(projectName).addTask(new Task(title, desc, date, priority, false, todoList.getProject(projectName).getIndexCount()));
-    todoList.updateAllProjects();
-    Storage.setTodoList(todoList);
-  }
+  static getProjectName(title) {
+    const userProjects = this.getTodoList()
+      .getAllProjects()
+      .filter((project) => !this.defaults.includes(project.getName()));
 
-  static deleteTask(projectName, taskTitle) {
-    const todoList = Storage.getTodoList();
-    todoList.getProject(projectName).deleteTask(taskTitle);
-    todoList.updateAllProjects();
-    Storage.setTodoList(todoList);
-  }
+    for (const project of userProjects) {
+      const selectedTask = project.getTask(title);
 
-  static updateTask(projectName, oldTitle, newTitle, newDesc, newDueDate, newPriority) {
-    const todoList = Storage.getTodoList();
-    todoList.getProject(projectName).getTask(oldTitle).setTitle(newTitle);
-    todoList.getProject(projectName).getTask(newTitle).setDescription(newDesc);
-    todoList.getProject(projectName).getTask(newTitle).setDueDate(newDueDate);
-    todoList.getProject(projectName).getTask(newTitle).setPriority(newPriority);
-    todoList.updateAllProjects();
-    Storage.setTodoList(todoList);
-  }
-
-  static toggleTaskCompleted(projectName, taskTitle) {
-    const todoList = Storage.getTodoList();
-    todoList.getProject(projectName).getTask(taskTitle).toggleCompleted();
-    todoList.updateAllProjects();
-    Storage.setTodoList(todoList);
-  }
-
-  static getProjectName(taskTitle) {
-    const todoList = Storage.getTodoList();
-    for (const project of todoList.getAllProjects().filter(project =>
-      !['Today', 'This week', 'Important'].includes(project.getName()))) {
-      if (project.contains(taskTitle)) {
-        return project.getName();
+      if (selectedTask) {
+        for (const task of project.getAllTasks()) {
+          if (task === selectedTask) {
+            return project.getName();
+          }
+        }
       }
     }
   }

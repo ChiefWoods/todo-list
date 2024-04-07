@@ -1,175 +1,203 @@
-import { format, isPast } from 'date-fns';
-import { Utility } from './Utility.js';
-import { Dialog } from './Dialog.js';
-import Storage from '../classes/Storage.js';
-import edit from '../icons/square-edit-outline.svg';
-import trash from '../icons/delete.svg';
-import add from '../icons/plus.svg';
+import { isPast } from "date-fns";
+import Utility from "./Utility.js";
+import Dialog from "./Dialog.js";
+import Storage from "../classes/Storage.js";
+import edit from "../icons/square-edit-outline.svg";
+import trash from "../icons/delete.svg";
+import add from "../icons/plus.svg";
 
-export const Section = (() => {
-  const createSection = projectName => {
-    const section = Utility.createText('section', ['container-project']);
-    const h1 = Utility.createText('h1', ['project-name'], projectName);
-    const menu = Utility.createText('menu', ['task-list']);
+export default (() => {
+  let selectedTaskTitle = null;
 
-    section.append(h1, menu);
+  /**
+   * Creates a section element with the specified name. If no name is provided, a default section is created.
+   *
+   * @param {string} [name=null] - The name of the section.
+   * @returns {HTMLElement} The section element.
+   */
+  const createSection = (name = null) => {
+    const section = Utility.createText("section", ["project-view"]);
+    const header = Utility.createText(
+      "h3",
+      ["project-name"],
+      name ?? "Select a project",
+    );
 
-    if (Storage.isProjectEmpty(projectName)) {
-      h1.insertAdjacentElement('afterend', createEmptyTask());
+    section.append(header);
+
+    if (name) {
+      const list = Utility.createText("menu", ["task-list"]);
+
+      Storage.getAllTasks(name).length
+        ? list.append(...Storage.getAllTasks(name).map(createTaskBtn))
+        : header.insertAdjacentElement(
+            "afterend",
+            Utility.createText(
+              "p",
+              ["empty-task"],
+              "It's quite empty in here...",
+            ),
+          );
+
+      if (!Storage.defaults.includes(name)) {
+        list.append(createTaskBtn());
+      }
+
+      section.append(list);
+    }
+
+    return section;
+  };
+
+  /**
+   * Creates a task button with the specified task data. If no task is provided, an "Add Task" button is created.
+   *
+   * @param {object} [task=null] - The task data.
+   * @returns {HTMLElement} The task button element.
+   */
+  const createTaskBtn = (task = null) => {
+    const li = document.createElement("li");
+
+    const taskBtn = Utility.createText("button", [
+      "task",
+      `${task ? `task-${task.priority}` : "add-task"}`,
+    ]);
+
+    if (task) {
+      taskBtn.addEventListener("click", (e) => {
+        if (["LABEL", "INPUT"].includes(e.target.tagName)) return;
+
+        const projectName = getProjectName();
+
+        Dialog.createDialog(
+          "view",
+          Storage.getTask(projectName, getTaskTitle(e.target)),
+          projectName,
+        );
+      });
+
+      const label = document.createElement("label");
+      label.htmlFor = `checkbox${task.index}`;
+
+      const checkbox = Utility.createFormControl("checkbox", "");
+      checkbox.id = `checkbox${task.index}`;
+      checkbox.checked = task.completed;
+
+      checkbox.addEventListener("change", (e) => {
+        const taskHeader = e.target
+          .closest(".task")
+          .querySelector(".task-title");
+
+        taskHeader.classList.toggle("completed");
+
+        Storage.toggleTaskCompleted(getProjectName(), taskHeader.textContent);
+      });
+
+      label.append(checkbox);
+
+      const taskTitle = Utility.createText(
+        "p",
+        ["task-title", `${task.completed ? "completed" : ""}`],
+        task.title,
+      );
+
+      const taskDate = Utility.createText(
+        "p",
+        [
+          "task-date",
+          `${task.dueDate && isPast(new Date(task.dueDate)) ? "expired" : ""}`,
+        ],
+        Utility.formatDate(task.dueDate),
+      );
+
+      const editBtn = Utility.createText("button", ["task-action-btn"]);
+
+      editBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectedTaskTitle = getTaskTitle(e.target);
+
+        const projectName = getProjectName();
+
+        Dialog.createDialog(
+          "edit",
+          Storage.getTask(projectName, selectedTaskTitle),
+          projectName,
+          selectedTaskTitle,
+        );
+      });
+
+      editBtn.append(Utility.createImg(edit, ["task-icon"], "Edit Task"));
+
+      const trashBtn = Utility.createText("button", ["task-action-btn"]);
+
+      trashBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectedTaskTitle = getTaskTitle(e.target);
+
+        const projectName = getProjectName();
+
+        Dialog.createDialog(
+          "delete",
+          Storage.getTask(projectName, selectedTaskTitle),
+          projectName,
+          selectedTaskTitle,
+        );
+      });
+
+      trashBtn.append(Utility.createImg(trash, ["task-icon"], "Delete Task"));
+
+      taskBtn.append(label, taskTitle, taskDate, editBtn, trashBtn);
     } else {
-      const allTasks = Storage.getAllTasks(projectName);
-      menu.append(...allTasks.map(task => createTaskLi(task)));
+      taskBtn.addEventListener("click", () => {
+        Dialog.createDialog("add", null, getProjectName());
+      });
+
+      taskBtn.append(
+        Utility.createImg(add, ["task-icon"]),
+        Utility.createText("p", ["task-title"], "Add Task"),
+      );
     }
 
-    if (!['Today', 'This week', 'Important'].includes(projectName)) {
-      menu.append(createAddTaskLi());
-    }
-
-    return section;
-  }
-
-  const createEmptySection = () => {
-    const section = Utility.createText('section', ['container-project']);
-    const h1 = Utility.createText('h1', ['project-name'], 'Select a project');
-
-    section.append(h1);
-
-    return section;
-  }
-
-  const createEmptyTask = () => {
-    return Utility.createText('h2', ['empty-task'], "It's quite empty here...")
-  }
-
-  const createTaskLi = task => {
-    const li = document.createElement('li');
-    const button = Utility.createText('button', ['task', `task-${task.getPriority()}`]);
-    addViewHandler(button);
-
-    const label = document.createElement('label');
-    label.htmlFor = `checkbox${task.getIndex()}`;
-
-    const input = Utility.createText('input', ['task-checkbox']);
-    input.type = 'checkbox';
-    input.id = `checkbox${task.getIndex()}`;
-    input.checked = task.getCompleted();
-    addCheckHandler(input);
-
-    const div = Utility.createText('div', ['checkbox-div']);
-
-    label.append(input, div);
-
-    const h2 = Utility.createText('h2', isTaskCompleted(task.getCompleted()), task.getTitle());
-    const span = Utility.createText('span', isTaskExpired(task.getDueDate()), dayMonthYear(task.getDueDate()));
-
-    const editIcon = Utility.createImg(edit, ['task-icon', 'task-edit-button'], 'Edit');
-    addEditHandler(editIcon);
-
-    const trashIcon = Utility.createImg(trash, ['task-icon', 'task-trash-button'], 'Trash');
-    addTrashHandler(trashIcon);
-
-    button.append(label, h2, span, editIcon, trashIcon);
-    li.append(button);
+    li.append(taskBtn);
 
     return li;
-  }
+  };
 
-  const createAddTaskLi = () => {
-    const li = document.createElement('li');
-    const button = Utility.createText('button', ['task', 'add-task']);
-    const img = Utility.createImg(add, '', 'Add');
-    const span = Utility.createText('span', [], 'Add Task');
+  /**
+   * Replaces the current section with a new section.
+   */
+  const replaceSection = () => {
+    const projectName = getProjectName();
 
-    button.append(img, span);
-    li.append(button);
-    addNewTaskHandler(li);
+    document
+      .querySelector(".project-view")
+      .replaceWith(createSection(projectName));
+    Utility.changeDocumentTitle(projectName);
+  };
 
-    return li;
-  }
+  /**
+   * Gets the name of the current project.
+   *
+   * @returns {string} The project name.
+   */
+  const getProjectName = () => {
+    return document.querySelector(".nav-item.selected > .project-name")
+      ?.textContent;
+  };
 
-  const removeTaskLi = li => {
-    li.remove();
-
-    const h1 = document.querySelector('.project-name');
-
-    if (Storage.isProjectEmpty(h1.textContent)) {
-      h1.insertAdjacentElement('afterend', createEmptyTask());
-    }
-  }
-
-  const addNewTaskHandler = li => {
-    li.addEventListener('click', () => {
-      const projectName = document.querySelector('.project-name').textContent;
-
-      Dialog.showCreateEditModal(projectName, null, 'create');
-    })
-  }
-
-  const addViewHandler = ele => {
-    ele.addEventListener('click', e => {
-      if (['task-checkbox', 'checkbox-div'].includes(e.target.className)) return;
-
-      const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
-      const projectName = Storage.getProjectName(taskTitle);
-
-      Dialog.showViewModal(projectName, Storage.getTask(projectName, taskTitle));
-    })
-  }
-
-  const addCheckHandler = input => {
-    input.addEventListener('click', e => {
-      const taskHeader = e.target.closest('.task').querySelector('.task-title');
-      const projectName = Storage.getProjectName(taskHeader.textContent);
-
-      taskHeader.classList.toggle('completed');
-
-      Storage.toggleTaskCompleted(projectName, taskHeader.textContent);
-    });
-  }
-
-  const addEditHandler = icon => {
-    icon.addEventListener('click', e => {
-      e.stopPropagation();
-
-      const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
-      const projectName = Storage.getProjectName(taskTitle);
-
-      Dialog.showCreateEditModal(projectName, Storage.getTask(projectName, taskTitle), 'edit');
-    })
-  }
-
-  const addTrashHandler = icon => {
-    icon.addEventListener('click', e => {
-      e.stopPropagation();
-
-      const taskTitle = e.target.closest('.task').querySelector('.task-title').textContent;
-      const projectName = Storage.getProjectName(taskTitle);
-
-      Dialog.showDeleteModal(projectName, taskTitle);
-    })
-  }
-
-  const replaceSection = projectName => {
-    projectName ? document.querySelector('.container-project').replaceWith(createSection(projectName))
-      : document.querySelector('.container-project').replaceWith(createEmptySection());
-  }
-
-  const dayMonthYear = date => {
-    return date ? format(new Date(date), 'dd/MM/yyyy') : '-';
-  }
-
-  const isTaskCompleted = completed => {
-    return completed ? ['task-title', 'completed'] : ['task-title'];
-  }
-
-  const isTaskExpired = date => {
-    return isPast(new Date(date)) && date ? ['task-date', 'expired'] : ['task-date'];
-  }
+  /**
+   * Gets the title of the task associated with the specified element.
+   *
+   * @param {HTMLElement} ele - The element associated with the task.
+   * @returns {string} The title of the task.
+   */
+  const getTaskTitle = (ele) => {
+    return ele.closest(".task").querySelector(".task-title").textContent;
+  };
 
   return {
     createSection,
-    createEmptySection,
-    removeTaskLi,
-    replaceSection
-  }
+    replaceSection,
+    getProjectName,
+  };
 })();

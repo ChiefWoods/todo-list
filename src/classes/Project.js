@@ -1,77 +1,67 @@
-import { isToday, isThisWeek, subDays } from 'date-fns';
+import { isToday, isThisWeek, subDays } from "date-fns";
 
 export default class Project {
+  name;
+  tasks = [];
+  index = 0;
+
   constructor(name) {
     this.name = name;
-    this.tasks = [];
-    this.taskCount = 0;
-    this.indexCount = 0;
   }
 
   getName() {
     return this.name;
   }
 
-  getTaskCount() {
-    return this.taskCount;
-  }
-
-  updateTaskCount() {
-    this.taskCount = this.tasks.length;
-  }
-
-  getIndexCount() {
-    return this.indexCount;
-  }
-
-  updateIndexCount() {
-    this.indexCount = this.tasks.length;
-  }
-
   getAllTasks() {
     return this.tasks;
-  }
-
-  getTask(taskTitle) {
-    return this.tasks.find(task => task.getTitle() === taskTitle);
   }
 
   setTasks(tasks) {
     this.tasks = tasks;
   }
 
-  contains(taskTitle) {
-    return this.tasks.some(task => task.getTitle() === taskTitle);
-  }
-
-  addTask(task) {
-    this.tasks.push(task);
-    this.taskCount++;
-    this.indexCount++;
-  }
-
-  deleteTask(taskTitle) {
-    this.tasks = this.tasks.filter(task => task.getTitle() !== taskTitle);
-    this.taskCount--;
-  }
-
   getTodayTasks() {
-    return this.tasks.filter(task => isToday(new Date(this.monthDayYear(task.getDueDate()))));
+    return this.tasks.filter((task) =>
+      isToday(new Date(this.formatDate(task.getDueDate()))),
+    );
   }
 
   getThisWeekTasks() {
-    return this.tasks.filter(task => isThisWeek(subDays(new Date(this.monthDayYear(task.getDueDate())), 1)));
+    return this.tasks.filter((task) =>
+      isThisWeek(subDays(new Date(this.formatDate(task.getDueDate())), 1)),
+    );
   }
 
   getImportantTasks() {
-    return this.tasks.filter(task => task.getPriority() === 'high');
+    return this.tasks.filter((task) => task.getPriority() === "high");
   }
 
-  monthDayYear(date) {
+  getTask(title) {
+    return this.tasks.find((task) => task.getTitle() === title);
+  }
+
+  addTask(task) {
+    this.index++;
+    this.tasks.push(task);
+  }
+
+  deleteTask(title) {
+    this.tasks = this.tasks.filter((task) => task.getTitle() !== title);
+  }
+
+  getIndex() {
+    return this.index;
+  }
+
+  updateIndex() {
+    this.index = this.tasks.length;
+  }
+
+  formatDate(date) {
     if (date) {
-      const day = date.split('-')[2];
-      const month = date.split('-')[1];
-      const year = date.split('-')[0];
+      const [year, month, day] = date.split("-");
+
       return `${month}/${day}/${year}`;
     } else {
       return null;

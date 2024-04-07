@@ -1,252 +1,361 @@
-import { format } from 'date-fns';
-import { Utility } from './Utility.js';
-import { Nav } from './Nav.js';
-import { Section } from './Section.js';
-import Storage from '../classes/Storage.js';
-import exit from '../icons/close-white.svg';
+import Utility from "./Utility.js";
+import Nav from "./Nav.js";
+import Section from "./Section.js";
+import Storage from "../classes/Storage.js";
+import exit from "../icons/close-white.svg";
 
-export const Dialog = (() => {
-  const showDeleteModal = (projectName, taskTitle = null) => {
-    const dialog = Utility.createText('dialog', ['modal-delete']);
-    dialog.open = true;
+export default (() => {
+  const priorityLevels = ["low", "medium", "high"];
 
-    const modalTop = Utility.createText('div', ['modal-delete-top']);
-    const span = Utility.createText('span', '', 'Confirm Delete');
-    const button = document.createElement('button');
-    const exitIcon = createExitIcon('delete');
+  /**
+   * Creates a dialog box depending on the type of action.
+   * @param {string} type - The type of dialog box to be created.
+   * @param {Task} task - The task object to be displayed.
+   * @param {string} projectName - The name of the project.
+   * @param {string} selectedTaskTitle - The title of the selected task.
+   */
+  const createDialog = (
+    type,
+    task = null,
+    projectName = null,
+    selectedTaskTitle = null,
+  ) => {
+    const dialog = Utility.createText("dialog", [`dialog-${type}`]);
 
-    button.append(exitIcon);
-    modalTop.append(span, button);
+    dialog.addEventListener("click", (e) => {
+      if (e.clientX !== 0 && e.clientY !== 0) {
+        const dimensions = dialog.getBoundingClientRect();
 
-    const modalBottom = Utility.createText('div', ['modal-delete-bottom']);
-
-    let spanConfirm = null;
-    taskTitle
-      ? spanConfirm = Utility.createText('span', [], 'Are you sure you want to delete this task?')
-      : spanConfirm = Utility.createText('span', [], `Are you sure you want to delete project ${projectName}? Warning: this is irreversible!`);
-
-    const div = Utility.createText('div', ['container-confirm']);
-
-    const deleteButton = Utility.createText('button', ['delete-confirm-button'], 'Delete');
-    taskTitle ? addDeleteTaskHandler(deleteButton, projectName, taskTitle) : addDeleteProjectHandler(deleteButton, projectName);
-
-    div.append(deleteButton);
-    modalBottom.append(spanConfirm, div);
-    dialog.append(modalTop, modalBottom);
-    document.querySelector('main').append(dialog);
-
-    toggleOverlay();
-  }
-
-  const showViewModal = (projectName, task) => {
-    const dialog = Utility.createText('dialog', ['modal-view']);
-    dialog.open = true;
-
-    const modalTop = Utility.createText('div', ['modal-view-top']);
-    const span = Utility.createText('h1', ['view-title'], task.getTitle());
-    const button = document.createElement('button');
-    const exitIcon = createExitIcon('view');
-
-    button.append(exitIcon);
-    modalTop.append(span, button);
-
-    const modalBottom = Utility.createText('div', ['modal-view-bottom']);
-    const desc = Utility.createText('p', ['view-desc'], task.getDescription());
-    const project = Utility.createText('p', ['view-project'], `Project: ${projectName}`);
-    const date = Utility.createText('p', ['view-date'], `Due Date: ${task.getDueDate() ? dayMonthYear(task.getDueDate()) : '-'}`);
-    const priority = Utility.createText('p', ['view-priority'], 'Priority: ');
-    const priorityLevel = Utility.createText('span', ['view-priority-level', `view-${task.getPriority()}`], capitalize(task.getPriority()));
-
-    priority.append(priorityLevel);
-    modalBottom.append(desc, project, date, priority);
-    dialog.append(modalTop, modalBottom);
-    document.querySelector('main').append(dialog);
-
-    toggleOverlay();
-  }
-
-  const showCreateEditModal = (projectName, task, mode) => {
-    const dialog = Utility.createText('dialog', [`modal-${mode}`]);
-    dialog.open = true;
-
-    const modalTop = Utility.createText('div', [`modal-${mode}-top`]);
-    const span = Utility.createText('span', '', `${capitalize(mode)} Task`);
-    const button = document.createElement('button');
-    const exitIcon = createExitIcon(mode);
-
-    button.append(exitIcon);
-    modalTop.append(span, button);
-
-    const form = Utility.createText('form', [`modal-${mode}-bottom`]);
-    form.method = 'dialog';
-
-    const inputText = Utility.createText('input', [`${mode}-task-title`]);
-    inputText.type = 'text';
-    inputText.placeholder = 'Title';
-    inputText.required = true;
-    if (task) inputText.value = task.getTitle();
-
-    const textarea = Utility.createText('textarea', [`${mode}-task-desc`]);
-    textarea.placeholder = 'Description';
-    textarea.required = true;
-    if (task) textarea.textContent = task.getDescription();
-
-    const divDate = Utility.createText('div', ['container-date']);
-
-    const label = Utility.createText('label', [], 'Due Date :');
-    label.htmlFor = `${mode}-task-date`;
-
-    const inputDate = document.createElement('input');
-    inputDate.type = 'date';
-    inputDate.id = `${mode}-task-date`;
-    if (task) inputDate.value = task.getDueDate();
-
-    divDate.append(label, inputDate);
-
-    const divPriority = Utility.createText('div', ['container-priority']);
-    const spanPriority = Utility.createText('span', [], 'Priority :');
-
-    divPriority.append(spanPriority);
-
-    const divPriorityLvl = Utility.createText('div', ['container-priority-level']);
-
-    ['low', 'medium', 'high'].forEach(level => {
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = `${mode}-task-priority`;
-      input.id = `${mode}-${level}`;
-      input.value = level;
-      if ((task && task.getPriority() === level) || (!task && level === 'low')) input.checked = true;
-
-      const label = Utility.createText('label', [`label-${level}`], capitalize(level));
-      label.htmlFor = `${mode}-${level}`;
-
-      divPriorityLvl.append(input, label);
-    })
-
-    divPriorityLvl.querySelector('input[value="low"]').required = true;
-
-    const addEditButton = Utility.createText('button', !task ? ['create-add-button'] : ['edit-change-button'], !task ? 'Add' : 'Edit');
-    addEditButton.type = 'submit';
-
-    !task ? addCreateHandler(form, projectName) : addEditHandler(form, projectName, task);
-
-    divPriority.append(divPriorityLvl, addEditButton);
-    form.append(inputText, textarea, divDate, divPriority);
-    dialog.append(modalTop, form);
-    document.querySelector('main').append(dialog);
-
-    toggleOverlay();
-  }
-
-  const createExitIcon = mode => {
-    const exitIcon = Utility.createImg(exit, [`${mode}-exit`, 'exit-button'], 'Exit');
-    addExitHandler(exitIcon);
-
-    return exitIcon;
-  }
-
-  const addExitHandler = element => {
-    element.addEventListener('click', removeDialog);
-  }
-
-  const addDeleteProjectHandler = (icon, projectName) => {
-    icon.addEventListener('click', () => {
-      removeDialog();
-
-      Storage.deleteProject(projectName);
-
-      for (const span of document.querySelectorAll('.nav-span')) {
-        if (span.textContent === projectName) {
-          Nav.removeProjectLi(span.closest('li'));
-          Nav.updateTaskCount();
-          if (span.closest('.project').classList.contains('selected')) {
-            Section.replaceSection();
-            Utility.changeDocumentTitle();
-          } else {
-            const currentView = document.querySelector('.project-name').textContent;
-            Section.replaceSection(currentView);
-          }
-          break;
+        if (
+          e.clientX < dimensions.left ||
+          e.clientX > dimensions.right ||
+          e.clientY < dimensions.top ||
+          e.clientY > dimensions.bottom
+        ) {
+          dialog.remove();
         }
       }
     });
-  }
 
-  const addDeleteTaskHandler = (button, projectName, taskTitle) => {
-    button.addEventListener('click', () => {
-      removeDialog();
+    switch (type) {
+      case "view":
+        dialog.append(
+          createDialogHeader(task.getTitle(), dialog),
+          createDialogViewMain(
+            task.getDescription(),
+            projectName,
+            task.getDueDate(),
+            task.getPriority(),
+          ),
+        );
+        break;
+      case "add":
+      case "edit":
+        dialog.append(
+          createDialogHeader(`${capitalizeFirstLetter(type)} Task`, dialog),
+          createDialogForm(
+            type,
+            dialog,
+            task?.getTitle() ?? "",
+            task?.getDescription() ?? "",
+            task?.getDueDate() ?? "",
+            task?.getPriority() ?? "",
+            selectedTaskTitle,
+          ),
+        );
+        break;
+      case "delete":
+        dialog.append(
+          createDialogHeader(
+            `Delete ${selectedTaskTitle ? "Task" : "Project"}`,
+            dialog,
+          ),
+          createDialogDeleteMain(dialog, projectName, selectedTaskTitle),
+        );
+    }
 
-      Storage.deleteTask(projectName, taskTitle);
+    document.querySelector("#body").append(dialog);
+
+    dialog.showModal();
+  };
+
+  /**
+   * Creates a dialog header with the specified title.
+   * @param {string} title - The title of the dialog box.
+   * @param {HTMLDialogElement} dialog - The dialog box element.
+   * @returns {HTMLDivElement} The dialog header element.
+   */
+  const createDialogHeader = (title, dialog) => {
+    const dialogHeader = Utility.createText("div", ["dialog-header"]);
+
+    const exitBtn = Utility.createText("button", ["exit-btn"]);
+    exitBtn.type = "reset";
+    exitBtn.addEventListener("click", () => dialog.remove());
+
+    const exitIcon = Utility.createImg(exit, ["exit-icon"], "Exit Dialog");
+    exitBtn.append(exitIcon);
+
+    dialogHeader.append(
+      Utility.createText("h4", ["dialog-title"], title),
+      exitBtn,
+    );
+
+    return dialogHeader;
+  };
+
+  /**
+   * Creates a dialog main element for viewing a task.
+   * @param {string} desc - The task description.
+   * @param {string} project - The project name.
+   * @param {string} date - The task due date.
+   * @param {string} priority - The task priority.
+   * @returns {HTMLDivElement} The dialog main element.
+   */
+  const createDialogViewMain = (desc, project, date, priority) => {
+    const dialogMain = Utility.createText("div", ["dialog-main"]);
+
+    const taskPriority = Utility.createText(
+      "p",
+      ["task-priority"],
+      "Priority : ",
+    );
+
+    taskPriority.append(
+      Utility.createText(
+        "span",
+        [`priority-${priority}`],
+        capitalizeFirstLetter(priority),
+      ),
+    );
+
+    dialogMain.append(
+      Utility.createText("p", ["task-desc"], desc.replace(/\n/g, "<br>")),
+      Utility.createText("p", ["task-project"], `Project : ${project}`),
+      Utility.createText(
+        "p",
+        ["task-date"],
+        `Due Date : ${Utility.formatDate(date)}`,
+      ),
+      taskPriority,
+    );
+
+    return dialogMain;
+  };
+
+  /**
+   * Creates a dialog main element for adding or editing a task.
+   * @param {string} type - The type of task to be created.
+   * @param {HTMLDialogElement} dialog - The dialog box element.
+   * @param {string} title - The task title.
+   * @param {string} desc - The task description.
+   * @param {string} date - The task due date.
+   * @param {string} priority - The task priority.
+   * @param {string} selectedTaskTitle - The title of the selected task.
+   * @returns {HTMLFormElement} The dialog main element.
+   */
+  const createDialogForm = (
+    type,
+    dialog,
+    title,
+    desc,
+    date,
+    priority,
+    selectedTaskTitle,
+  ) => {
+    const dialogMain = Utility.createText("form", ["dialog-main"]);
+
+    dialogMain.addEventListener("submit", (e) => {
+      e.preventDefault();
+      dialog.remove();
+
+      const formData = new FormData(dialogMain);
+      const { title, desc, priority } = Object.fromEntries(formData.entries());
+      const dueDate =
+        formData.get("due-date") === "" ? null : formData.get("due-date");
+
+      const projectName = Section.getProjectName();
+
+      type === "add"
+        ? Storage.addTask(projectName, title, desc, dueDate, priority)
+        : Storage.updateTask(
+            Storage.getProjectName(selectedTaskTitle),
+            selectedTaskTitle,
+            title,
+            desc,
+            dueDate,
+            priority,
+          );
+
       Nav.updateTaskCount();
-
-      const currentView = document.querySelector('.project-name').textContent;
-      Section.replaceSection(currentView);
+      Section.replaceSection();
     });
-  }
 
-  const addCreateHandler = (form, projectName) => {
-    form.addEventListener('submit', e => {
-      const properties = getTaskProperties(form, 'create');
+    const titleInput = Utility.createFormControl("text", "title", title, true);
+    titleInput.placeholder = "Title";
+    titleInput.autofocus = true;
 
-      e.preventDefault();
-      removeDialog();
+    const descTextarea = Utility.createFormControl("textarea", "desc", desc);
+    descTextarea.placeholder = "Description";
 
-      Storage.addTask(projectName, ...Object.values(properties), Storage.getIndexCount(projectName));
+    const dateDiv = Utility.createText("div", ["date-container"]);
+
+    const dateLabel = Utility.createText("label", [], "Due By :");
+    dateLabel.htmlFor = "dialog-due-date";
+
+    const dateInput = Utility.createFormControl("date", "due-date", date);
+    dateInput.id = "dialog-due-date";
+    dateInput.addEventListener("click", () => dateInput.showPicker());
+
+    dateDiv.append(dateLabel, dateInput);
+
+    const fieldset = Utility.createText("fieldset", ["priority-container"]);
+    const legend = Utility.createText("legend", [], "Priority :");
+
+    const radioGroup = priorityLevels.map((level) => {
+      const label = Utility.createText(
+        "label",
+        ["dialog-priority", `priority-${level}`],
+        capitalizeFirstLetter(level),
+      );
+
+      label.htmlFor = level;
+
+      const input = Utility.createFormControl(
+        "radio",
+        "priority",
+        level,
+        level === "low",
+      );
+      input.name = "priority";
+      input.id = level;
+      input.checked = level === priority;
+
+      label.append(input);
+
+      return label;
+    });
+
+    const primaryBtn = createDialogPrimaryBtn(type);
+    primaryBtn.type = "submit";
+
+    const innerContainer = Utility.createText("div", [
+      "inner-priority-container",
+    ]);
+    innerContainer.append(
+      ...radioGroup,
+      createDialogBtnGroup([createDialogCancelBtn(dialog), primaryBtn]),
+    );
+
+    fieldset.append(legend, innerContainer);
+    dialogMain.append(titleInput, descTextarea, dateDiv, fieldset);
+
+    return dialogMain;
+  };
+
+  /**
+   * Creates a dialog main element for deleting a task or project.
+   * @param {HTMLDialogElement} dialog - The dialog box element.
+   * @param {string} projectName - The name of the project.
+   * @param {string} selectedTaskTitle - The title of the selected task.
+   * @returns {HTMLDivElement} The dialog main element.
+   */
+  const createDialogDeleteMain = (dialog, projectName, selectedTaskTitle) => {
+    const dialogMain = Utility.createText("div", ["dialog-main"]);
+
+    const confirmation = Utility.createText(
+      "p",
+      ["prompt"],
+      `Are you sure you want to delete ${selectedTaskTitle ? "this task" : "project " + projectName}?`,
+    );
+
+    if (!selectedTaskTitle) {
+      confirmation.append(
+        Utility.createText(
+          "span",
+          ["warning"],
+          " Warning: this is irreversible!",
+        ),
+      );
+    }
+
+    const primaryBtn = createDialogPrimaryBtn("delete");
+    primaryBtn.type = "button";
+
+    primaryBtn.addEventListener("click", () => {
+      dialog.remove();
+
+      if (selectedTaskTitle) {
+        Storage.deleteTask(
+          Storage.getProjectName(selectedTaskTitle),
+          selectedTaskTitle,
+        );
+      } else {
+        Storage.deleteProject(projectName);
+        Nav.removeNavBtn(projectName);
+        Nav.showNav();
+      }
+
       Nav.updateTaskCount();
-      const currentView = document.querySelector('.project-name').textContent;
-      Section.replaceSection(currentView);
-    })
-  }
+      Section.replaceSection();
+    });
 
-  const addEditHandler = (form, projectName, task) => {
-    form.addEventListener('submit', e => {
-      const properties = getTaskProperties(form, 'edit');
+    dialogMain.append(
+      confirmation,
+      createDialogBtnGroup([createDialogCancelBtn(dialog), primaryBtn]),
+    );
 
-      e.preventDefault();
-      removeDialog();
+    return dialogMain;
+  };
 
-      const oldTitle = task.getTitle();
+  /**
+   * Creates a primary button for the dialog box.
+   * @param {string} content - The content of the button.
+   * @returns {HTMLButtonElement} The primary button element.
+   */
+  const createDialogPrimaryBtn = (content) => {
+    return Utility.createText(
+      "button",
+      ["primary-btn"],
+      capitalizeFirstLetter(content),
+    );
+  };
 
-      Storage.updateTask(projectName, oldTitle, ...Object.values(properties));
-      Nav.updateTaskCount();
-      const currentView = document.querySelector('.project-name').textContent;
-      Section.replaceSection(currentView);
-    })
-  }
+  /**
+   * Creates a cancel button for the dialog box.
+   * @param {HTMLDialogElement} dialog - The dialog box element.
+   * @returns {HTMLButtonElement} The cancel button element.
+   */
+  const createDialogCancelBtn = (dialog) => {
+    const cancelBtn = Utility.createText("button", ["cancel-btn"], "Cancel");
+    cancelBtn.type = "reset";
+    cancelBtn.addEventListener("click", () => dialog.remove());
 
-  const removeDialog = () => {
-    document.querySelector('dialog').remove();
-    toggleOverlay();
-  }
+    return cancelBtn;
+  };
 
-  const toggleOverlay = () => {
-    const overlay = document.querySelector('.overlay');
-    overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
-  }
+  /**
+   * Creates a button group for the dialog box.
+   * @param {HTMLButtonElement[]} btns - The buttons to be added to the group.
+   * @returns {HTMLDivElement} The button group element.
+   */
+  const createDialogBtnGroup = (btns) => {
+    const btnGroup = Utility.createText("div", ["btn-container"]);
 
-  const getTaskProperties = (form, mode) => {
-    const title = form.querySelector(`.${mode}-task-title`).value;
-    const desc = form.querySelector(`.${mode}-task-desc`).value;
-    const dateValue = form.querySelector(`#${mode}-task-date`).value;
-    const date = dateValue || null;
-    const priority = form.querySelector(`input[name="${mode}-task-priority"]:checked`).value;
+    btnGroup.append(...btns);
 
-    return { title, desc, date, priority };
-  }
+    return btnGroup;
+  };
 
-  const capitalize = word => {
+  /**
+   * Capitalizes the first letter of a word.
+   * @param {string} word - The word to be capitalized.
+   * @returns {string} The word with the first letter capitalized.
+   */
+  const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
-  }
-
-  const dayMonthYear = date => {
-    return date ? format(new Date(date), 'dd/MM/yyyy') : '';
-  }
+  };
 
   return {
-    showDeleteModal,
-    showViewModal,
-    showCreateEditModal,
-    addExitHandler
-  }
+    createDialog,
+  };
 })();
