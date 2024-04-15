@@ -69,5 +69,5 @@ export default {
       }),
     ],
   },
-  stats: 'minimal',
+  stats: "minimal",
 };
