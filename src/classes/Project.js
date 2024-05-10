@@ -3,7 +3,6 @@ import { isToday, isThisWeek, subDays } from "date-fns";
 export default class Project {
   name;
   tasks = [];
-  index = 0;
 
   constructor(name) {
     this.name = name;
@@ -42,20 +41,11 @@ export default class Project {
   }
 
   addTask(task) {
-    this.index++;
     this.tasks.push(task);
   }
 
   deleteTask(title) {
     this.tasks = this.tasks.filter((task) => task.getTitle() !== title);
-  }
-
-  getIndex() {
-    return this.index;
-  }
-
-  updateIndex() {
-    this.index = this.tasks.length;
   }
 
   formatDate(date) {

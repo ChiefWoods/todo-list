@@ -27,12 +27,14 @@ export function deserialize(str) {
 function serializeTodoList(todoList) {
   return {
     projects: todoList.projects.map(serializeProject),
+    usedId: Array.from(todoList.usedId),
   };
 }
 
 function deserializeTodoList(data) {
   const todoList = new TodoList();
   todoList.projects = data.projects.map(deserializeProject);
+  todoList.usedId = new Set(data.usedId);
   return todoList;
 }
 
@@ -41,35 +43,33 @@ function serializeProject(project) {
     name: project.name,
     tasks: project.tasks.map(serializeTask),
     taskCount: project.tasks.length,
-    indexCount: project.index,
   };
 }
 
 function deserializeProject(data) {
   const project = new Project(data.name);
   project.tasks = data.tasks.map(deserializeTask);
-  project.updateIndex();
   return project;
 }
 
 function serializeTask(task) {
   return {
+    id: task.id,
     title: task.title,
     description: task.description,
     dueDate: task.dueDate,
     priority: task.priority,
     completed: task.completed,
-    index: task.index,
   };
 }
 
 function deserializeTask(data) {
   return new Task(
+    data.id,
     data.title,
     data.description,
     data.dueDate,
     data.priority,
     data.completed,
-    data.index,
   );
 }

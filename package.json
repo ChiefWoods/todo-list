@@ -32,6 +32,8 @@
     "webpack-dev-server": "^4.15.2"
   },
   "dependencies": {
-    "date-fns": "^3.6.0"
+    "date-fns": "^3.6.0",
+    "nanoid": "^5.0.7",
+    "nanoid-dictionary": "^4.3.0"
   }
 }

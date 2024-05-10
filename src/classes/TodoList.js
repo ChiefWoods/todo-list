@@ -1,6 +1,10 @@
 import { compareAsc } from "date-fns";
+import { customAlphabet } from "nanoid";
+import { alphanumeric } from "nanoid-dictionary";
 import Project from "./Project.js";
 import Task from "./Task.js";
+
+const nanoid = customAlphabet(alphanumeric, 10);
 
 export default class TodoList {
   weightage = {
@@ -10,6 +14,7 @@ export default class TodoList {
   };
 
   projects;
+  usedId = new Set();
 
   constructor(defaults = null) {
     this.projects = defaults ? defaults.map((name) => new Project(name)) : [];
@@ -45,9 +50,15 @@ export default class TodoList {
 
   addTask(defaults, name, title, desc, date, priority) {
     const project = this.getProject(name);
-    project.addTask(
-      new Task(title, desc, date, priority, false, project.getIndex()),
-    );
+    let id;
+
+    do {
+      id = nanoid();
+    } while (this.usedId.has(id));
+
+    project.addTask(new Task(id, title, desc, date, priority, false));
+
+    this.usedId.add(id);
     this.updateDefaultProjects(defaults);
   }
 
@@ -63,13 +74,16 @@ export default class TodoList {
     this.updateDefaultProjects(defaults);
   }
 
-  toggleTaskCompleted(defaults, name, title) {
-    this.getProject(name).getTask(title).toggleCompleted();
-    this.updateDefaultProjects(defaults);
-  }
+  toggleTaskCompleted(defaults, id) {
+    this.projects.forEach((project) => {
+      project.getAllTasks().forEach((task) => {
+        if (task.getId() === id) {
+          task.toggleCompleted();
+        }
+      });
+    });
 
-  getIndex(name) {
-    return this.getProject(name).getIndex();
+    this.updateDefaultProjects(defaults);
   }
 
   updateDefaultProjects(defaults) {
@@ -77,7 +91,6 @@ export default class TodoList {
       const defaultProject = this.getProject(name);
 
       defaultProject.setTasks([]);
-      defaultProject.updateIndex();
 
       this.projects.forEach((project) => {
         if (!defaults.includes(project.getName())) {
@@ -88,15 +101,15 @@ export default class TodoList {
                 ? project.getThisWeekTasks()
                 : project.getImportantTasks();
 
-          tasks.forEach((task, index) => {
+          tasks.forEach((task) => {
             defaultProject.addTask(
               new Task(
+                task.getId(),
                 task.getTitle(),
                 task.getDescription(),
                 task.getDueDate(),
                 task.getPriority(),
                 task.getCompleted(),
-                index,
               ),
             );
           });
@@ -109,10 +122,6 @@ export default class TodoList {
         }
       });
     });
-  }
-
-  reindexTasks(tasks) {
-    tasks.forEach((task, index) => task.setIndex(index));
   }
 
   sortByPriority(tasks) {

@@ -396,6 +396,7 @@ label[for^="checkbox"]::after {
   font-size: 1.2rem;
   transition: all 0.2s;
   position: absolute;
+  top: 1px;
 }
 
 label[for^="checkbox"]:has(input[type="checkbox"]:checked) {

@@ -77,10 +77,10 @@ export default (() => {
       });
 
       const label = document.createElement("label");
-      label.htmlFor = `checkbox${task.index}`;
+      label.htmlFor = `checkbox-${task.id}`;
 
       const checkbox = Utility.createFormControl("checkbox", "");
-      checkbox.id = `checkbox${task.index}`;
+      checkbox.id = `checkbox-${task.id}`;
       checkbox.checked = task.completed;
 
       checkbox.addEventListener("change", (e) => {
@@ -90,7 +90,7 @@ export default (() => {
 
         taskHeader.classList.toggle("completed");
 
-        Storage.toggleTaskCompleted(getProjectName(), taskHeader.textContent);
+        Storage.toggleTaskCompleted(task.id);
       });
 
       label.append(checkbox);

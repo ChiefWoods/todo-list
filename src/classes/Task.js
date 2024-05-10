@@ -1,18 +1,22 @@
 export default class Task {
+  id;
   title;
   description;
   dueDate;
   priority;
   completed;
-  index;
 
-  constructor(title, desc, dueDate, priority, completed, index) {
+  constructor(id, title, desc, dueDate, priority, completed) {
+    this.id = id;
     this.title = title;
     this.description = desc;
     this.dueDate = dueDate;
     this.priority = priority;
     this.completed = completed;
-    this.index = index;
+  }
+
+  getId() {
+    return this.id;
   }
 
   getTitle() {
@@ -37,14 +41,6 @@ export default class Task {
 
   toggleCompleted() {
     this.completed = !this.completed;
-  }
-
-  getIndex() {
-    return this.index;
-  }
-
-  setIndex(index) {
-    this.index = index;
   }
 
   updateTask(title, desc, dueDate, priority) {

@@ -40,10 +40,6 @@ export default class Storage {
     this.setTodoList(this.todoList);
   }
 
-  static getIndex(name) {
-    return this.getTodoList().getIndex(name);
-  }
-
   static getAllTasks(name) {
     return this.getTodoList().getAllTasks(name);
   }
@@ -84,8 +80,8 @@ export default class Storage {
     this.setTodoList(this.todoList);
   }
 
-  static toggleTaskCompleted(name, title) {
-    this.getTodoList().toggleTaskCompleted(this.defaults, name, title);
+  static toggleTaskCompleted(id) {
+    this.getTodoList().toggleTaskCompleted(this.defaults, id);
     this.setTodoList(this.todoList);
   }
 

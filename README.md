@@ -32,6 +32,7 @@ Task planner for [The Odin Project](https://www.theodinproject.com/).
 ### Libraries
 
 - [date-fns](https://date-fns.org/)
+- [nanoid](https://github.com/ai/nanoid)
 
 ### Tools
 
