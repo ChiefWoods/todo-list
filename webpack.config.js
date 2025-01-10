@@ -16,8 +16,8 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Todo List",
-      template: "src/template.html",
-      favicon: "src/icons/clipboard-check-outline.svg",
+      template: "./src/template.html",
+      favicon: "./src/favicon.svg",
     }),
   ],
   output: {
