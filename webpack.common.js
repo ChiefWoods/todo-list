@@ -3,16 +3,7 @@ import { EsbuildPlugin } from "esbuild-loader";
 import esbuild from "esbuild";
 
 export default {
-  mode: "development",
   entry: "./src/index.js",
-  devtool: "eval-source-map",
-  devServer: {
-    static: "dist",
-    client: {
-      logging: "error",
-      overlay: false,
-    },
-  },
   plugins: [
     new HtmlWebpackPlugin({
       title: "Todo List",
@@ -22,8 +13,6 @@ export default {
   ],
   output: {
     publicPath: "auto",
-    filename: "main.[contenthash].js",
-    assetModuleFilename: "[path]/[name].[contenthash].[ext]",
     clean: true,
   },
   module: {
