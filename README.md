@@ -74,6 +74,12 @@ bun run start
 bun run build
 ```
 
+5. Preview build
+
+```bash
+bun run preview
+```
+
 ## Issues
 
 View the [open issues](https://github.com/ChiefWoods/todo-list/issues) for a full list of proposed features and known bugs.
